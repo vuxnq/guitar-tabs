@@ -1,3 +1,4 @@
-## Our backend API
-
-TODO: Write description or instructions 
+```
+npx prisma generate
+npx prisma db seed
+```

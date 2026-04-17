@@ -7,6 +7,7 @@
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts",
     "prettier": "prettier --write .",
+    "studio": "npx -p better-sqlite3 -p prisma prisma studio --url file:./dev.db\n",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -1,21 +1,21 @@
-import express from 'express';
-import cors from 'cors';
-import prisma from './db';
+import express from "express";
+import cors from "cors";
+import prisma from "./db";
 
 const app = express();
-const PORT = process.env.PORT || 3000; 
+const PORT = process.env.PORT || 3000;
 
 // middlewares
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
 // test
-app.get('/', (req, res) => {
-  res.send('API running');
+app.get("/", (req, res) => {
+  res.send("API running");
 });
 
 // GET /api/tabs - get all tabs with include
-app.get('/api/tabs', async (req, res) => {
+app.get("/api/tabs", async (req, res) => {
   try {
     const tabs = await prisma.tab.findMany({
       include: {
@@ -23,17 +23,17 @@ app.get('/api/tabs', async (req, res) => {
           include: {
             release: {
               include: {
-                artist: true
-              }
-            }
-          }
-        }
-      }
+                artist: true,
+              },
+            },
+          },
+        },
+      },
     });
     res.json(tabs);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'internal error' });
+    res.status(500).json({ error: "internal error" });
   }
 });
 
