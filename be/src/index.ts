@@ -85,56 +85,56 @@ app.get("/api/tabs", async (req, res) => {
 });
 
 // POST /api/tabs - create a new tab (and automatically create missing artists/releases/tracks)
-app.post('/api/tabs', async (req, res) => {
+app.post("/api/tabs", async (req, res) => {
   const { artistName, releaseTitle, trackTitle, content, author } = req.body;
 
   if (!artistName || !releaseTitle || !trackTitle || !content || !author) {
-    return res.status(400).json({ error: 'all fields are required' });
+    return res.status(400).json({ error: "all fields are required" });
   }
 
   try {
     // artist
     let artist = await prisma.artist.findUnique({
-      where: { name: artistName }
+      where: { name: artistName },
     });
-    
+
     if (!artist) {
       artist = await prisma.artist.create({
-        data: { name: artistName }
+        data: { name: artistName },
       });
     }
 
     // release (scoped to the specific artist)
     let release = await prisma.release.findFirst({
-      where: { 
-        title: releaseTitle, 
-        artistId: artist.id 
-      }
+      where: {
+        title: releaseTitle,
+        artistId: artist.id,
+      },
     });
 
     if (!release) {
       release = await prisma.release.create({
-        data: { 
-          title: releaseTitle, 
-          artistId: artist.id 
-        }
+        data: {
+          title: releaseTitle,
+          artistId: artist.id,
+        },
       });
     }
 
     // track (scoped to the specific release)
     let track = await prisma.track.findFirst({
-      where: { 
-        title: trackTitle, 
-        releaseId: release.id 
-      }
+      where: {
+        title: trackTitle,
+        releaseId: release.id,
+      },
     });
 
     if (!track) {
       track = await prisma.track.create({
-        data: { 
-          title: trackTitle, 
-          releaseId: release.id 
-        }
+        data: {
+          title: trackTitle,
+          releaseId: release.id,
+        },
       });
     }
 
@@ -143,31 +143,30 @@ app.post('/api/tabs', async (req, res) => {
       data: {
         content,
         author,
-        trackId: track.id
+        trackId: track.id,
       },
       include: {
         track: {
           include: {
             release: {
               include: {
-                artist: true
-              }
-            }
-          }
-        }
-      }
+                artist: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     res.status(201).json(newTab);
-
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'failed to create the tab' });
+    res.status(500).json({ error: "failed to create the tab" });
   }
 });
 
 // GET /api/tabs/:id - get a single tab by id
-app.get('/api/tabs/:id', async (req, res) => {
+app.get("/api/tabs/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -178,27 +177,27 @@ app.get('/api/tabs/:id', async (req, res) => {
           include: {
             release: {
               include: {
-                artist: true
-              }
-            }
-          }
-        }
-      }
+                artist: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!tab) {
-      return res.status(404).json({ error: 'tab not found' });
+      return res.status(404).json({ error: "tab not found" });
     }
 
     res.json(tab);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'failed to fetch the tab' });
+    res.status(500).json({ error: "failed to fetch the tab" });
   }
 });
 
 // PUT /api/tabs/:id - update tab content or author
-app.put('/api/tabs/:id', async (req, res) => {
+app.put("/api/tabs/:id", async (req, res) => {
   const { id } = req.params;
   const { content, author } = req.body;
 
@@ -207,31 +206,31 @@ app.put('/api/tabs/:id', async (req, res) => {
       where: { id: Number(id) },
       data: {
         content,
-        author
-      }
+        author,
+      },
     });
 
     res.json(updatedTab);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'failed to update the tab' });
+    res.status(500).json({ error: "failed to update the tab" });
   }
 });
 
 // DELETE /api/tabs/:id - delete a tab
-app.delete('/api/tabs/:id', async (req, res) => {
+app.delete("/api/tabs/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
     await prisma.tab.delete({
-      where: { id: Number(id) }
+      where: { id: Number(id) },
     });
 
     // 204 no content - standard for successful deletions
     res.status(204).send();
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'failed to delete the tab' });
+    res.status(500).json({ error: "failed to delete the tab" });
   }
 });
 

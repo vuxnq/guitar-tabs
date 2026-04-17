@@ -7,24 +7,24 @@ const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  console.log('seeding db...');
+  console.log("seeding db...");
 
   // elliott smith
   const elliott = await prisma.artist.upsert({
-    where: { name: 'Elliott Smith' },
-    update: {}, 
+    where: { name: "Elliott Smith" },
+    update: {},
     create: {
-      name: 'Elliott Smith',
+      name: "Elliott Smith",
       releases: {
         create: {
-          title: 'Either/Or',
+          title: "Either/Or",
           tracks: {
             create: [
               {
-                title: 'Between the Bars',
+                title: "Between the Bars",
                 tabs: {
                   create: {
-                    author: 'dawiawdhoo',
+                    author: "dawiawdhoo",
                     content: `Standard Tuning (E A D G B E)
 Capo on 2nd fret
 
@@ -35,44 +35,44 @@ B|-----1---1-----------1---1-----|
 G|---2-------2---2---2-------2---|
 D|-----------------3-----------3-|
 A|-0-----------------------------|
-E|-------------------------------|`
-                  }
-                }
+E|-------------------------------|`,
+                  },
+                },
               },
               {
-                title: 'Angeles',
+                title: "Angeles",
                 tabs: {
                   create: {
-                    author: 'neumim_tabovat',
+                    author: "neumim_tabovat",
                     content: `Standard Tuning (E A D G B E)
 Capo on 5th fret
-(Fast fingerpicking pattern)`
-                  }
-                }
-              }
-            ]
-          }
-        }
-      }
-    }
+(Fast fingerpicking pattern)`,
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+    },
   });
 
   // converge
   const converge = await prisma.artist.upsert({
-    where: { name: 'Converge' },
+    where: { name: "Converge" },
     update: {},
     create: {
-      name: 'Converge',
+      name: "Converge",
       releases: {
         create: {
-          title: 'Jane Doe',
+          title: "Jane Doe",
           tracks: {
             create: [
               {
-                title: 'Concubine',
+                title: "Concubine",
                 tabs: {
                   create: {
-                    author: 'fartguitar123',
+                    author: "fartguitar123",
                     content: `Drop C Tuning (C G C F A D)
 Tempo: 230 BPM (Chaos)
 
@@ -83,32 +83,32 @@ F|-----------------------------------------|
 C|-0-0-0-0-0---0-0-0-0---0-0-0---0-0-------|
 G|-0-0-0-0-0---0-0-0-0---0-0-0---0-0-------|
 C|-0-0-0-0-0---0-0-0-0---0-0-0---0-0-------|
-  PM.......   PM.....   PM...   PM.`
-                  }
-                }
+  PM.......   PM.....   PM...   PM.`,
+                  },
+                },
               },
               {
-                title: 'Jane Doe',
+                title: "Jane Doe",
                 tabs: {
                   create: {
-                    author: 'evzen',
+                    author: "evzen",
                     content: `Drop C Tuning
-(Epic 11-minute closer)`
-                  }
-                }
-              }
-            ]
-          }
-        }
-      }
-    }
+(Epic 11-minute closer)`,
+                  },
+                },
+              },
+            ],
+          },
+        },
+      },
+    },
   });
-  console.log('seeding done');
+  console.log("seeding done");
 }
 
 main()
   .catch((e) => {
-    console.error('seeding failed:', e);
+    console.error("seeding failed:", e);
     process.exit(1);
   })
   .finally(async () => {
