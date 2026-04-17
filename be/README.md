@@ -3,4 +3,8 @@ npx prisma generate
 npx prisma db seed
 ```
 
-TODO: .env
+.env
+```
+# https://www.prisma.io/docs/orm/reference/connection-urls
+DATABASE_URL="file:./dev.db"
+```
