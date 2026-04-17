@@ -1,3 +1,64 @@
+# plan
+### idea
+the core idea is a community database for guitar tabs
+
+to keep the data clean and avoid duplicate mess, we are categorizing tabs logically: artists -> releases -> tracks -> tabs
+
+instead of forcing users to click through multiple pages to add an artist, then an album, then a track, we re going to build a single "smart form" that handles all of that in one go
+
+### database scheme
+prisma
+
+- **artist**
+  - `id` (pk)
+  - `name` (string)
+- **release** * `id` (pk)
+  - `title` (string)
+  - `artistId` (fk -> artist)
+- **track** * `id` (pk)
+  - `title` (string)
+  - `releaseId` (fk -> release)
+- **tab** (main CRUD target)
+  - `id` (pk)
+  - `content` (text) - the raw ASCII tab text
+  - `author` (string) - who transcribed it
+  - `trackId` (fk -> track)
+  - `createdAt` (datetime)
+
+### front-end
+react and react router
+
+- `/` **(home):** simple landing page with our names, project info, and quick links to browse or add tabs
+- `/tabs` **(list):** displays all tabs. itll show the track name, artist, and who wrote the tab. clicking one takes you to the detail page
+- `/tabs/:id` **(detail):** shows the full tablature using a `<pre>` tag so the monospace formatting doesnt break. well also put the "edit" and "delete" buttons here
+- `/tabs/new` **(create):** this is where our smart form lives
+- `/tabs/:id/edit` **(update):** a prefilled form for fixing mistakes in the tab content or author name
+
+### smart form
+to make adding tabs painless the `/tabs/new` page will use react autocomplete components (like MUI's `Autocomplete` with `freeSolo` enabled)
+
+1. **artist:** user starts typing. They can either pick an existing artist from the dropdown or click "Add new: [Input]" or smthg
+2. **release:** unlocks after picking an artist. only shows releases for that specific artist. again, they can pick or create a new one
+3. **track:** unlocks after picking a release. select or create
+4. **tab content:** a giant `<textarea>` for the tab itself, plus a small input for the authors name.
+5. **submit:** express backend takes this whole payload, figures out what needs to be created first (if there are new artists/tracks), and saves everything in the right order
+
+### endpoints
+
+**the core tab endpoints:**
+- `GET /api/tabs` - gets all tabs
+- `GET /api/tabs/:id` - gets one tab (joined with its track, release, and artist info)
+- `POST /api/tabs` - creates a new tab. this is the heavy lifter that also creates any missing artists/releases/tracks from the smart form
+- `PUT /api/tabs/:id` - updates tab content/author
+- `DELETE /api/tabs/:id` - deletes the tab
+
+**helpers (smart form):**
+- `GET /api/artists` 
+- `GET /api/releases?artistId={id}` 
+- `GET /api/tracks?releaseId={id}`
+
+---
+
 # Project Instructions
 Write a React single page application that will connect to an API server. The app should allow CRUD (Create, Read, Update, Delete) operations on a single type of resource (For example Blog Posts) and limited CRUD operations on another connected resource (For example Comments).
 
