@@ -15,7 +15,6 @@ app.get("/", (req, res) => {
 });
 
 // artists
-
 // GET /api/artists - get all artists
 app.get("/api/artists", async (req, res) => {
   try {
@@ -49,13 +48,23 @@ app.get("/api/artists/:id", async (req, res) => {
   }
 });
 
+// releases
 // GET /api/releases - get all releases (optionally filtered by artistId)
 app.get("/api/releases", async (req, res) => {
   const { artistId } = req.query;
 
+  let whereClause = {};
+  if (artistId) {
+    const parsedId = Number(artistId);
+    if (isNaN(parsedId)) {
+      return res.status(400).json({ error: "artistId must be a number" });
+    }
+    whereClause = { artistId: parsedId };
+  }
+
   try {
     const releases = await prisma.release.findMany({
-      where: artistId ? { artistId: Number(artistId) } : {},
+      where: whereClause,
       orderBy: { title: "asc" },
     });
     res.json(releases);
@@ -85,13 +94,23 @@ app.get("/api/releases/:id", async (req, res) => {
   }
 });
 
+// tracks
 // GET /api/tracks - get all tracks (optionally filtered by releaseId)
 app.get("/api/tracks", async (req, res) => {
   const { releaseId } = req.query;
 
+  let whereClause = {};
+  if (releaseId) {
+    const parsedId = Number(releaseId);
+    if (isNaN(parsedId)) {
+      return res.status(400).json({ error: "releaseId must be a number" });
+    }
+    whereClause = { releaseId: parsedId };
+  }
+
   try {
     const tracks = await prisma.track.findMany({
-      where: releaseId ? { releaseId: Number(releaseId) } : {},
+      where: whereClause,
       orderBy: { title: "asc" },
     });
     res.json(tracks);
@@ -122,7 +141,6 @@ app.get("/api/tracks/:id", async (req, res) => {
 });
 
 // tabs
-
 // GET /api/tabs - get all tabs
 app.get("/api/tabs", async (req, res) => {
   try {
