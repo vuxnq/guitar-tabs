@@ -77,20 +77,20 @@ You can pick any combination of 2 resources. For example: (Movies & Actors, Trai
     - README, Prettier, Able to run the whole project easily! 
 
 ## Must use:
-- React
-- NodeJS Express 
+- [React](https://reactjs.org/docs/getting-started.html)
+- [NodeJS Express](https://expressjs.com/)
 
 ### Recommended (we worked with them on labs):
-- Routing - React Router ⚠️Highly recommended. React router must be v7⚠️
-- ORM - Prisma
-- UI Component Library - MUI 
-- Code formatting - Prettier
-- API requests - Axios or Fetch
+- Routing - [React Router](https://reactrouter.com/) ⚠️Highly recommended. React router must be v7⚠️
+- ORM - [Prisma](https://www.prisma.io/)
+- UI Component Library - [MUI](https://mui.com/)
+- Code formatting - [Prettier](https://prettier.io/)
+- API requests - [Axios](https://github.com/axios/axios) or [Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
 - Typescript
 
 ### Libraries which you can check out:
-- Easier Forms - React hook form, Formik, React final form
-- UI Libraries - MUI, Tailwind, ShadCN, Mantine, ChakraUI,  Antd, Semantic UI
-- API requests - Native JS fetch 
-- Routing - React Location
-- Data Fetching - TanStack Query
+- Easier Forms - [React hook form](https://react-hook-form.com/), [Formik](https://formik.org/), [React final form](https://final-form.org/docs/react-final-form/getting-started)
+- UI Libraries - [MUI](https://mui.com/material-ui/), [Tailwind](https://tailwindcss.com/), [ShadCN](https://ui.shadcn.com/), [Mantine](https://mantine.dev/), [ChakraUI](https://chakra-ui.com/),  [Antd](https://ant.design/), [Semantic UI](https://semantic-ui.com/)
+- API requests - [Native JS fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+- Routing - [React Location](https://github.com/tannerlinsley/react-location)
+- Data Fetching - [TanStack Query](https://github.com/TanStack/query)
