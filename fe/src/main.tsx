@@ -7,11 +7,14 @@ import { Home } from './routes/Home.tsx'
 import { Tabs, loader as tabsLoader } from './routes/Tabs.tsx'
 import { TabDetail, loader as tabDetailLoader } from './routes/TabDetail.tsx'
 import { TabEdit, loader as tabEditLoader } from './routes/TabEdit.tsx'
+import { ErrorBoundary } from './components/ErrorBoundary.tsx'
+import { TabNew, action as tabNewAction, loader as tabNewLoader } from './routes/TabNew.tsx'
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <App />,
+        errorElement: <ErrorBoundary />,
         children: [
             {
                 index: true,
@@ -32,6 +35,12 @@ const router = createBrowserRouter([
                 element: <TabEdit />,
                 loader: tabEditLoader,
             },
+            {
+                path: 'tabs/new',
+                element: <TabNew />,
+                loader: tabNewLoader,
+                action: tabNewAction,
+            }
         ],
     },
 ])
