@@ -11,7 +11,7 @@ app.use(express.json());
 
 // test
 app.get("/", (req, res) => {
-  res.send("API running");
+  res.send(req.headers);
 });
 
 // helpers
@@ -81,6 +81,88 @@ app.get("/api/tabs", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "internal error" });
+  }
+});
+
+// POST /api/tabs - create a new tab (and automatically create missing artists/releases/tracks)
+app.post('/api/tabs', async (req, res) => {
+  const { artistName, releaseTitle, trackTitle, content, author } = req.body;
+
+  if (!artistName || !releaseTitle || !trackTitle || !content || !author) {
+    return res.status(400).json({ error: 'all fields are required' });
+  }
+
+  try {
+    // artist
+    let artist = await prisma.artist.findUnique({
+      where: { name: artistName }
+    });
+    
+    if (!artist) {
+      artist = await prisma.artist.create({
+        data: { name: artistName }
+      });
+    }
+
+    // release (scoped to the specific artist)
+    let release = await prisma.release.findFirst({
+      where: { 
+        title: releaseTitle, 
+        artistId: artist.id 
+      }
+    });
+
+    if (!release) {
+      release = await prisma.release.create({
+        data: { 
+          title: releaseTitle, 
+          artistId: artist.id 
+        }
+      });
+    }
+
+    // track (scoped to the specific release)
+    let track = await prisma.track.findFirst({
+      where: { 
+        title: trackTitle, 
+        releaseId: release.id 
+      }
+    });
+
+    if (!track) {
+      track = await prisma.track.create({
+        data: { 
+          title: trackTitle, 
+          releaseId: release.id 
+        }
+      });
+    }
+
+    // create linked to the track
+    const newTab = await prisma.tab.create({
+      data: {
+        content,
+        author,
+        trackId: track.id
+      },
+      include: {
+        track: {
+          include: {
+            release: {
+              include: {
+                artist: true
+              }
+            }
+          }
+        }
+      }
+    });
+
+    res.status(201).json(newTab);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'failed to create the tab' });
   }
 });
 
