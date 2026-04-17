@@ -155,13 +155,3 @@ export function TabNew() {
     </>
 }
 
-
-/*
-
-Input an artist name
-fetch releases with the artistId
-
-
-
-
- */
