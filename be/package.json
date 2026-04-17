@@ -1,5 +1,6 @@
 {
   "name": "be",
+  "private": true,
   "version": "1.0.0",
   "description": "TODO: Write description or instructions",
   "main": "index.js",

@@ -28,6 +28,26 @@ app.get("/api/artists", async (req, res) => {
   }
 });
 
+// GET /api/artists/:id - get artist by id
+app.get("/api/artists/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const artist = await prisma.artist.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!artist) {
+      return res.status(404).json({ error: "artist not found" });
+    }
+
+    res.json(artist);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "failed to fetch the artist" });
+  }
+});
+
 // GET /api/releases - get all releases (optionally filtered by artistId)
 app.get("/api/releases", async (req, res) => {
   const { artistId } = req.query;
