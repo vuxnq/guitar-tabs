@@ -19,3 +19,15 @@ export async function getTracks(
 
     return await res.json() as Track[]
 }
+
+export async function getTrack(
+    {
+        trackId 
+    }: { 
+        trackId: number 
+    }
+): Promise<Track> {
+    const res = await fetch(apiUrl(`/tracks/${trackId}`))
+    const data = await res.json() as Track
+    return data  
+}
