@@ -14,7 +14,8 @@ app.get("/", (req, res) => {
   res.send(req.headers);
 });
 
-// helpers
+// artists
+
 // GET /api/artists - get all artists
 app.get("/api/artists", async (req, res) => {
   try {
@@ -64,6 +65,26 @@ app.get("/api/releases", async (req, res) => {
   }
 });
 
+// GET /api/releases/:id - get release by id
+app.get("/api/releases/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const release = await prisma.release.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!release) {
+      return res.status(404).json({ error: "release not found" });
+    }
+
+    res.json(release);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "failed to fetch the release" });
+  }
+});
+
 // GET /api/tracks - get all tracks (optionally filtered by releaseId)
 app.get("/api/tracks", async (req, res) => {
   const { releaseId } = req.query;
@@ -80,23 +101,32 @@ app.get("/api/tracks", async (req, res) => {
   }
 });
 
+// GET /api/tracks/:id - get track by id
+app.get("/api/tracks/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const track = await prisma.track.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!track) {
+      return res.status(404).json({ error: "track not found" });
+    }
+
+    res.json(track);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "failed to fetch the track" });
+  }
+});
+
 // tabs
-// GET /api/tabs - get all tabs with include
+
+// GET /api/tabs - get all tabs
 app.get("/api/tabs", async (req, res) => {
   try {
-    const tabs = await prisma.tab.findMany({
-      include: {
-        track: {
-          include: {
-            release: {
-              include: {
-                artist: true,
-              },
-            },
-          },
-        },
-      },
-    });
+    const tabs = await prisma.tab.findMany();
     res.json(tabs);
   } catch (error) {
     console.error(error);
@@ -165,17 +195,6 @@ app.post("/api/tabs", async (req, res) => {
         author,
         trackId: track.id,
       },
-      include: {
-        track: {
-          include: {
-            release: {
-              include: {
-                artist: true,
-              },
-            },
-          },
-        },
-      },
     });
 
     res.status(201).json(newTab);
@@ -192,17 +211,6 @@ app.get("/api/tabs/:id", async (req, res) => {
   try {
     const tab = await prisma.tab.findUnique({
       where: { id: Number(id) },
-      include: {
-        track: {
-          include: {
-            release: {
-              include: {
-                artist: true,
-              },
-            },
-          },
-        },
-      },
     });
 
     if (!tab) {
@@ -246,7 +254,6 @@ app.delete("/api/tabs/:id", async (req, res) => {
       where: { id: Number(id) },
     });
 
-    // 204 no content - standard for successful deletions
     res.status(204).send();
   } catch (error) {
     console.error(error);
