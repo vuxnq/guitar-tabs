@@ -35,7 +35,7 @@ export type NewTabRequest = {
 export async function newTab(tab: NewTabRequest) {
     console.log('new tab:', JSON.stringify(tab))
 
-    const res = await fetch(apiUrl(`/tabs`), {
+    const res = await fetch(apiUrl(`/tabs/smart`), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
