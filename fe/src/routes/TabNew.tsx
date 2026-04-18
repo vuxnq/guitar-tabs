@@ -1,18 +1,17 @@
-import { Form, useLoaderData, type ActionFunctionArgs } from "react-router";
-import { newTab } from "../api/tabs";
-import type { Artist, Release, Track } from "../types";
-import { getArtists } from "../api/artists";
-import { useEffect, useState } from "react";
-import { getReleases } from "../api/releases";
-import { getTracks } from "../api/tracks";
+import { Form, redirect, useLoaderData, type ActionFunctionArgs } from 'react-router';
+import { createTab } from '../api/tabs';
+import type { Artist, Release, Track } from '../types';
+import { getArtists } from '../api/artists';
+import { useEffect, useState } from 'react';
+import { getReleases } from '../api/releases';
+import { getTracks } from '../api/tracks';
+import { AutocompleteField } from '../components/AutocompleteField';
 
 export async function loader() {
     return await getArtists()
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-    console.log('tab new action')
-
     const formData = await request.formData()
 
     const artistName = formData.get('artistName')!.toString()
@@ -21,137 +20,106 @@ export async function action({ request }: ActionFunctionArgs) {
     const content = formData.get('content')!.toString()
     const author = formData.get('author')!.toString()
 
-    console.log({
-        artistName, 
+    const tab = await createTab({
+        artistName,
         releaseTitle,
-        trackTitle, 
-        content, 
-        author, 
+        trackTitle,
+        content,
+        author,
     })
 
-    await newTab({ 
-        artistName, 
-        releaseTitle,
-        trackTitle, 
-        content, 
-        author, 
-    })
+    throw redirect(`/tabs/${tab.id}`)
 }
 
 export function TabNew() {
     const artists = useLoaderData() as Artist[]
 
-    const [artistSearch, setArtistSearch] = useState('')
-    const [releaseSearch, setReleaseSearch] = useState('')
-    const [trackSearch, setTrackSearch] = useState('')
+    const [artistName, setArtistName] = useState('')
+    const [releaseTitle, setReleaseTitle] = useState('')
+    const [trackTitle, setTrackTitle] = useState('')
 
-    const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null)
     const [releases, setReleases] = useState<Release[]>([])
-    const [selectedRelease, setSelectedRelease] = useState<Release | null>(null)
     const [tracks, setTracks] = useState<Track[]>([])
 
-    useEffect(() => {
-        if (!selectedArtist)
-            return
+    const selectedArtist = artists.find(x => x.name === artistName) ?? null
+    const selectedRelease = releases.find(x => x.title === releaseTitle) ?? null
 
-        (async () => {
-            setReleases(await getReleases({ artistId: selectedArtist.id }))
-        })()
+    useEffect(() => {
+        if (!selectedArtist) return
+        getReleases({ artistId: selectedArtist.id }).then(setReleases)
     }, [selectedArtist])
 
     useEffect(() => {
-        if (!selectedRelease)
-            return
-
-        (async () => {
-            setTracks(await getTracks({ releaseId: selectedRelease.id }))
-        })()
+        if (!selectedRelease) return
+        getTracks({ releaseId: selectedRelease.id }).then(setTracks)
     }, [selectedRelease])
 
-    const filteredArtists = artists.filter(x => x.name.toLowerCase().includes(artistSearch.toLowerCase()))
-    const filteredReleases = releases.filter(x => x.title.toLowerCase().includes(releaseSearch.toLowerCase()))
-    const filteredTrack = tracks.filter(x => x.title.toLowerCase().includes(trackSearch.toLowerCase()))
+    const handleArtistChange = (value: string) => {
+        setArtistName(value)
+        setReleaseTitle('')
+        setTrackTitle('')
+        setReleases([])
+        setTracks([])
+    }
 
-    return <>
-        <h1>New Tab</h1>
-        data: {JSON.stringify(artists, null, 2)}
+    const handleReleaseChange = (value: string) => {
+        setReleaseTitle(value)
+        setTrackTitle('')
+        setTracks([])
+    }
 
-        <Form method='POST'>
-            <div>
-                <label>
-                    Artist: 
-                    <input 
-                        type='text' 
-                        value={artistSearch} 
-                        onChange={(e) => setArtistSearch(e.target.value)} 
-                    />
-                    <select 
-                        name='artistName' 
-                        onChange={(e) => { 
-                            console.log('on change artist name:', e.currentTarget.value)
-                            const name = e.currentTarget.value
-                            setSelectedArtist(artists.find(x => x.name === name)!)
-                        }}
-                    >
-                        <option>-- select --</option>
-                        {filteredArtists.map(x => <option key={x.id} value={x.name}>{x.name}</option>)}
-                    </select>
-                </label>
-            </div>
-            <div>
-                <label>
-                    Release:
-                    <input 
-                        type='text' 
-                        value={releaseSearch} 
-                        onChange={(e) => setReleaseSearch(e.target.value)}
-                    />
-                    <select 
-                        name='releaseTitle' 
-                        onChange={(e) => {
-                            console.log('on change release title:', e.currentTarget.value)
-                            const title = e.currentTarget.value
-                            setSelectedRelease(releases.find(x => x.title === title)!)
-                        }}
-                    >
-                        <option>-- select --</option>
-                        {filteredReleases.map(x => <option key={x.id} value={x.title}>{x.title}</option>)}
-                    </select>
-                </label>
-            </div>
-            <div>
-                <label>
-                    Track:
-                    <input 
-                        type='text' 
-                        value={trackSearch} 
-                        onChange={(e) => setTrackSearch(e.target.value)} 
-                    />
-                    <select 
-                        name='trackTitle'
-                        onChange={(e) => {
-                            console.log('on change track title:', e.currentTarget.value)
-                        }}
-                    >
-                        <option>-- select --</option>
-                        {filteredTrack.map(x => <option key={x.id} value={x.title}>{x.title}</option>)}
-                    </select>
-                </label>
-            </div>
-            <div>
-                <label>
-                    Author:
-                    <input type='text' name='author' />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Content: 
-                    <textarea name='content' />
-                </label>
-            </div>
-            <button type='submit'>Submit</button>
-        </Form>
-    </>
+    return (
+        <>
+            <h1>New Tab</h1>
+
+            <Form method='POST'>
+                <AutocompleteField
+                    label='Artist'
+                    name='artistName'
+                    value={artistName}
+                    options={artists}
+                    getLabel={(x) => x.name}
+                    onChange={handleArtistChange}
+                />
+
+                <AutocompleteField
+                    label='Release'
+                    name='releaseTitle'
+                    value={releaseTitle}
+                    options={releases}
+                    getLabel={(x) => x.title}
+                    onChange={handleReleaseChange}
+                />
+
+                <AutocompleteField
+                    label='Track'
+                    name='trackTitle'
+                    value={trackTitle}
+                    options={tracks}
+                    getLabel={(x) => x.title}
+                    onChange={setTrackTitle}
+                />
+
+                <div>
+                    <div>
+                        <label>Author:</label>
+                    </div>
+                    <div>
+                        <input type='text' name='author' />
+                    </div>
+                </div>
+
+                <div>
+                    <div>
+                        <label>Content:</label>
+                    </div>
+                    <div>
+                        <textarea name='content' />
+                    </div>
+                </div>
+
+                <button type='submit'>Submit</button>
+            </Form>
+        </>
+    )
 }
-

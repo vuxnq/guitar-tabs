@@ -32,7 +32,7 @@ export type NewTabRequest = {
     author: string,
 }
 
-export async function newTab(tab: NewTabRequest) {
+export async function createTab(tab: NewTabRequest) {
     console.log('new tab:', JSON.stringify(tab))
 
     const res = await fetch(apiUrl(`/tabs`), {
@@ -43,5 +43,26 @@ export async function newTab(tab: NewTabRequest) {
         body: JSON.stringify(tab),
     })
 
-    return res
+    const createdTab = await res.json() as Tab
+
+    return createdTab
+}
+
+export type UpdateTabRequest = {
+    id: number
+    content: string
+    author: string
+}
+
+export async function updateTab(tab: UpdateTabRequest) {
+    const res = await fetch(apiUrl(`/tabs/${tab.id}`), {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(tab),
+    })
+
+    const updatedTab = await res.json() as Tab
+    return updatedTab
 }

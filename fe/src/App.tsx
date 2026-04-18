@@ -8,6 +8,8 @@ export default function App() {
             <Link to="/">Home</Link>
             <br />
             <Link to="/tabs">Tabs</Link>
+            <br />
+            <Link to="/artists">Artists</Link>
         </nav>
 
         <Outlet />
