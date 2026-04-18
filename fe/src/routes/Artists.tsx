@@ -13,6 +13,12 @@ export function Artists() {
     return <>
         <h1>Artists</h1>
 
+        {/*
+        <pre>
+            {JSON.stringify(data, null, 2)}
+        </pre>
+        */}
+
         <ul>
             {data.map((x, i) => <li key={i}>
                 <Link to={`/artists/${x.id}`}>

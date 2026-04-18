@@ -35,8 +35,10 @@ export function TabEdit() {
     return <>
         <h1>Edit Tab</h1>
 
+        {/*
         Tab data: 
         <pre>{JSON.stringify(data, null, 2)}</pre>
+        */}
 
         <Form method='PUT'>
             <div>

@@ -13,9 +13,12 @@ export function ArtistDetail() {
 
     return <>
         <h1>Artist Detail</h1>
+
+        {/*
         <pre>
             {JSON.stringify(data, null, 2)}
         </pre>
+        */}
 
         Name: {data.name}
         <div>

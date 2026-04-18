@@ -13,14 +13,21 @@ export function TrackDetail() {
     return <>
         <h1>Track Detail</h1>
 
+        {/*
         <pre>
             {JSON.stringify(data, null, 2)}
         </pre>
+        */}
 
-        {data.tabs.map(tab => <li>
-            <Link to={`/tabs/${tab.id}`}>
-                {tab.author} | {tab.createdAt.toLocaleString()}
-            </Link>
-        </li>)}
+        <div>
+            Tabs:
+            <ul>
+                {data.tabs.map(tab => <li>
+                    <Link to={`/tabs/${tab.id}`}>
+                        {tab.author} | {tab.createdAt.toLocaleString()}
+                    </Link>
+                </li>)}
+            </ul>
+        </div>
     </>
 }
