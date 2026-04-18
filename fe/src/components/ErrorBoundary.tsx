@@ -1,11 +1,11 @@
 import { useRouteError } from "react-router";
 
 export function ErrorBoundary() {
-  const err = useRouteError();
+  const error = useRouteError() as any;
   return (
-    <>
-      <h1>App Error</h1>
-      <pre>{err.message}</pre>
-    </>
+    <div>
+      <h1>Oops! Something went wrong</h1>
+      <pre>{error?.message || JSON.stringify(error, null, 2)}</pre>
+    </div>
   );
 }

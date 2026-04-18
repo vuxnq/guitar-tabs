@@ -1,15 +1,15 @@
 export type Artist = {
   id: number;
   name: string;
-  releases: Release[];
+  releases?: Release[];
 };
 
 export type Release = {
   id: number;
   title: string;
   artistId: number;
-  artist: Artist;
-  tracks: Track[];
+  artist?: Artist;
+  tracks?: Track[];
 };
 
 export type Track = {
@@ -17,7 +17,7 @@ export type Track = {
   title: string;
   releaseId: number;
   release: Release;
-  tabs: Tab[];
+  tabs?: Tab[];
 };
 
 export type Tab = {
@@ -25,6 +25,6 @@ export type Tab = {
   content: string; // raw ASCII tab text
   author: string;
   trackId: number;
-  track: Track;
+  track?: Track;
   createdAt: Date;
 };

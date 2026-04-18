@@ -1,69 +1,64 @@
 import {
+  useLoaderData,
   Form,
   redirect,
-  useLoaderData,
-  type ActionFunctionArgs,
   type LoaderFunctionArgs,
+  type ActionFunctionArgs,
 } from "react-router";
 import { getTab, updateTab } from "../api/tabs";
-import type { Tab } from "../types";
 
-export function loader({ params }: LoaderFunctionArgs) {
-  const tabId = Number.parseInt(params.tabId as string);
-  return getTab({ tabId });
+export async function loader({ params }: LoaderFunctionArgs) {
+  if (!params.tabId) throw new Error("Missing tabId");
+  return await getTab({ tabId: Number(params.tabId) });
 }
 
-export async function action({ params, request }: ActionFunctionArgs) {
-  console.debug("tab edit action");
-
+export async function action({ request, params }: ActionFunctionArgs) {
   const formData = await request.formData();
 
-  console.debug(params);
+  const payload = {
+    id: Number(params.tabId),
+    author: formData.get("author") as string,
+    content: formData.get("content") as string,
+  };
 
-  const id = Number.parseInt(params.tabId!);
-  const content = formData.get("content")!.toString();
-  const author = formData.get("author")!.toString();
-
-  console.debug("tab edit:", { id, content, author });
-
-  const tab = await updateTab({
-    id,
-    content,
-    author,
-  });
-
-  throw redirect(`/tabs/${tab.id}`);
+  await updateTab(payload);
+  return redirect(`/tabs/${params.tabId}`);
 }
 
 export function TabEdit() {
-  const data = useLoaderData() as Tab;
+  const tab = useLoaderData();
 
   return (
-    <>
-      <h1>Edit Tab</h1>
-
-      {/*
-        Tab data: 
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-        */}
-
-      <Form method="PUT">
-        <div>
-          <label>
-            Content:
-            <textarea name="content" defaultValue={data.content} />
-          </label>
-        </div>
-
-        <div>
-          <label>
-            Author:
-            <input type="text" name="author" defaultValue={data.author} />
-          </label>
-        </div>
-
-        <button type="submit">Submit</button>
+    <div>
+      <h1>Edit Tab #{tab.id}</h1>
+      <Form
+        method="PUT"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "1rem",
+          maxWidth: "400px",
+        }}
+      >
+        <label>
+          Author:
+          <input type="text" name="author" defaultValue={tab.author} required />
+        </label>
+        <label>
+          Tab Content:
+          <textarea
+            name="content"
+            defaultValue={tab.content}
+            rows={10}
+            required
+            style={{ fontFamily: "monospace", width: "100%" }}
+          ></textarea>
+        </label>
+        <button type="submit">Update Tab</button>
       </Form>
-    </>
+
+      <h2>Current Data</h2>
+      <pre>{JSON.stringify(tab, null, 2)}</pre>
+    </div>
   );
 }

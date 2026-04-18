@@ -1,42 +1,18 @@
-import { Link, useLoaderData, type LoaderFunctionArgs } from "react-router";
+import { useLoaderData, type LoaderFunctionArgs } from "react-router";
 import { getArtist } from "../api/artists";
-import type { Artist } from "../types";
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const artistId = Number.parseInt(params.artistId!);
-  const artist = await getArtist({ artistId, include: true });
-  return artist;
+  if (!params.artistId) throw new Error("Missing artistId");
+  return await getArtist({ artistId: Number(params.artistId), include: true });
 }
 
 export function ArtistDetail() {
-  const data = useLoaderData() as Artist;
+  const artist = useLoaderData();
 
   return (
-    <>
-      <h1>Artist Detail</h1>
-      {/*
-        <pre>
-            {JSON.stringify(data, null, 2)}
-        </pre>
-        */}
-      Name: {data.name}
-      <div>
-        Releases:
-        <ul>
-          {data.releases.map((release) => (
-            <li>
-              {release.title}
-              <ul>
-                {release.tracks.map((track) => (
-                  <li>
-                    <Link to={`/tracks/${track.id}`}>{track.title}</Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
+    <div>
+      <h1>Artist Detail: {artist.name}</h1>
+      <pre>{JSON.stringify(artist, null, 2)}</pre>
+    </div>
   );
 }

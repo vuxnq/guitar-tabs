@@ -1,23 +1,19 @@
 const API_URL = "http://localhost:3000/api";
 
-type Filter = {
-  include: boolean | null;
-  key: string;
-  value: string | number | boolean | null;
-};
+type QueryParams = Record<string, string | number | boolean | null | undefined>;
 
-export function apiUrl(path: string, filters: Filter[] = []) {
-  // if the path doesn't start with slash, then add the slash
-  if (path.startsWith("/")) {
-    path = path.slice(1);
+export function apiUrl(path: string, params?: QueryParams) {
+  const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+  const url = new URL(`${API_URL}/${cleanPath}`);
+
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== false) {
+        url.searchParams.append(key, String(value));
+      }
+    });
   }
 
-  const urlFilters = filters
-    .filter((x) => x.include && x.value !== null)
-    .map((x) => `${x.key}=${x.value}`)
-    .join("&");
-
-  const url = `${API_URL}/${path}?${urlFilters}`;
-  console.debug("apiUrl:", url);
-  return url;
+  console.debug("apiUrl:", url.toString());
+  return url.toString();
 }

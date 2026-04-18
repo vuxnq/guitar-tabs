@@ -1,33 +1,46 @@
-import { Link, useLoaderData, type LoaderFunctionArgs } from "react-router";
-import { getTab } from "../api/tabs";
-import type { Tab } from "../types";
-import { getTrack } from "../api/tracks";
-import { getRelease } from "../api/releases";
+import {
+  useLoaderData,
+  Form,
+  Link,
+  redirect,
+  type LoaderFunctionArgs,
+  type ActionFunctionArgs,
+} from "react-router";
+import { getTab, deleteTab } from "../api/tabs";
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const tabId = Number.parseInt(params.tabId as string);
-  const tab = await getTab({ tabId });
-  tab.track = await getTrack({ trackId: tab.trackId });
-  tab.track.release = await getRelease({ releaseId: tab.track.releaseId });
-  return tab;
+  if (!params.tabId) throw new Error("Missing tabId");
+  return await getTab({ tabId: Number(params.tabId), include: true });
+}
+
+export async function action({ request, params }: ActionFunctionArgs) {
+  if (request.method === "DELETE") {
+    await deleteTab({ tabId: Number(params.tabId), cleanup: true });
+    return redirect("/tabs");
+  }
+  return null;
 }
 
 export function TabDetail() {
-  const data = useLoaderData() as Tab;
+  const tab = useLoaderData();
 
   return (
-    <>
-      <h1>Tab Detail</h1>
-      <Link to={`/tabs/${data.id}/edit`}>Edit</Link> <br />
-      {/*
-        Data:
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-        */}
-      Track: {data.track.title} <br />
-      Release: {data.track.release.title} <br />
-      Author: {data.author} <br />
-      Created At: {data.createdAt.toString()} <br />
-      <pre>{data.content}</pre>
-    </>
+    <div>
+      <h1>Tab Detail #{tab.id}</h1>
+      <Link to={`/tabs/${tab.id}/edit`}>Edit Tab</Link>
+
+      <Form
+        method="DELETE"
+        style={{ display: "inline-block", marginLeft: "1rem" }}
+      >
+        <button type="submit">Delete Tab</button>
+      </Form>
+
+      <h2>Content:</h2>
+      <pre>{tab.content}</pre>
+
+      <h2>Raw Data:</h2>
+      <pre>{JSON.stringify(tab, null, 2)}</pre>
+    </div>
   );
 }

@@ -1,37 +1,19 @@
-import { Link, useLoaderData, type LoaderFunctionArgs } from "react-router";
+import { useLoaderData, Link, type LoaderFunctionArgs } from "react-router";
 import { getTrack } from "../api/tracks";
-import type { Track } from "../types";
 
 export async function loader({ params }: LoaderFunctionArgs) {
-  const trackId = Number.parseInt(params.trackId!);
-  const track = await getTrack({ trackId, include: true });
-  return track;
+  if (!params.trackId) throw new Error("Missing trackId");
+  return await getTrack({ trackId: Number(params.trackId), include: true });
 }
 
 export function TrackDetail() {
-  const data = useLoaderData() as Track;
+  const track = useLoaderData();
+
   return (
-    <>
-      <h1>Track Detail</h1>
-
-      {/*
-        <pre>
-            {JSON.stringify(data, null, 2)}
-        </pre>
-        */}
-
-      <div>
-        Tabs:
-        <ul>
-          {data.tabs.map((tab) => (
-            <li>
-              <Link to={`/tabs/${tab.id}`}>
-                {tab.author} | {tab.createdAt.toLocaleString()}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
+    <div>
+      <h1>Track Detail: {track.title}</h1>
+      <Link to="/tabs/new">Add a new tab for this or another track</Link>
+      <pre>{JSON.stringify(track, null, 2)}</pre>
+    </div>
   );
 }

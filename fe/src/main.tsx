@@ -2,21 +2,11 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import App from "./App.tsx";
-import "./index.css";
-import { Home } from "./routes/Home.tsx";
-import { Tabs, loader as tabsLoader } from "./routes/Tabs.tsx";
-import { TabDetail, loader as tabDetailLoader } from "./routes/TabDetail.tsx";
-import {
-  TabEdit,
-  loader as tabEditLoader,
-  action as tabEditAction,
-} from "./routes/TabEdit.tsx";
 import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
-import {
-  TabNew,
-  action as tabNewAction,
-  loader as tabNewLoader,
-} from "./routes/TabNew.tsx";
+
+// routes
+import { Home } from "./routes/Home.tsx";
+import { Search, loader as searchLoader } from "./routes/Search.tsx";
 import { Artists, loader as artistsLoader } from "./routes/Artists.tsx";
 import {
   ArtistDetail,
@@ -26,6 +16,22 @@ import {
   TrackDetail,
   loader as trackDetailLoader,
 } from "./routes/TrackDetail.tsx";
+import { Tabs, loader as tabsLoader } from "./routes/Tabs.tsx";
+import {
+  TabDetail,
+  loader as tabDetailLoader,
+  action as tabDetailAction,
+} from "./routes/TabDetail.tsx";
+import {
+  TabNew,
+  loader as tabNewLoader,
+  action as tabNewAction,
+} from "./routes/TabNew.tsx";
+import {
+  TabEdit,
+  loader as tabEditLoader,
+  action as tabEditAction,
+} from "./routes/TabEdit.tsx";
 
 const router = createBrowserRouter([
   {
@@ -33,26 +39,26 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorBoundary />,
     children: [
+      { index: true, element: <Home /> },
+      { path: "search", element: <Search />, loader: searchLoader },
+
+      // Artists
+      { path: "artists", element: <Artists />, loader: artistsLoader },
       {
-        index: true,
-        element: <Home />,
+        path: "artists/:artistId",
+        element: <ArtistDetail />,
+        loader: artistDetailLoader,
       },
+
+      // Tracks
       {
-        path: "tabs",
-        element: <Tabs />,
-        loader: tabsLoader,
+        path: "tracks/:trackId",
+        element: <TrackDetail />,
+        loader: trackDetailLoader,
       },
-      {
-        path: "tabs/:tabId",
-        element: <TabDetail />,
-        loader: tabDetailLoader,
-      },
-      {
-        path: "tabs/:tabId/edit",
-        element: <TabEdit />,
-        loader: tabEditLoader,
-        action: tabEditAction,
-      },
+
+      // Tabs
+      { path: "tabs", element: <Tabs />, loader: tabsLoader },
       {
         path: "tabs/new",
         element: <TabNew />,
@@ -60,19 +66,16 @@ const router = createBrowserRouter([
         action: tabNewAction,
       },
       {
-        path: "artists",
-        element: <Artists />,
-        loader: artistsLoader,
+        path: "tabs/:tabId",
+        element: <TabDetail />,
+        loader: tabDetailLoader,
+        action: tabDetailAction,
       },
       {
-        path: "artists/:artistId",
-        element: <ArtistDetail />,
-        loader: artistDetailLoader,
-      },
-      {
-        path: "tracks/:trackId",
-        element: <TrackDetail />,
-        loader: trackDetailLoader,
+        path: "tabs/:tabId/edit",
+        element: <TabEdit />,
+        loader: tabEditLoader,
+        action: tabEditAction,
       },
     ],
   },

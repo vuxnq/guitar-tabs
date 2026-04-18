@@ -1,32 +1,24 @@
-import { Link, useLoaderData } from "react-router";
+import { useLoaderData, Link } from "react-router";
 import { getArtists } from "../api/artists";
-import type { Artist } from "../types";
 
 export async function loader() {
-  const artists = await getArtists();
-  return artists;
+  return await getArtists();
 }
 
 export function Artists() {
-  const data = useLoaderData() as Artist[];
+  const artists = useLoaderData();
 
   return (
-    <>
+    <div>
       <h1>Artists</h1>
-
-      {/*
-        <pre>
-            {JSON.stringify(data, null, 2)}
-        </pre>
-        */}
-
       <ul>
-        {data.map((x, i) => (
-          <li key={i}>
-            <Link to={`/artists/${x.id}`}>{x.name}</Link>
+        {artists.map((artist) => (
+          <li key={artist.id}>
+            <Link to={`/artists/${artist.id}`}>{artist.name}</Link>
           </li>
         ))}
       </ul>
-    </>
+      <pre>{JSON.stringify(artists, null, 2)}</pre>
+    </div>
   );
 }
