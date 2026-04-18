@@ -5,8 +5,22 @@ const router = Router();
 
 // GET /api/tabs
 router.get("/", async (req, res) => {
+  const { trackId } = req.query;
+
+  let whereClause = {};
+  if (trackId) {
+    const parsedId = Number(trackId);
+    if (isNaN(parsedId)) {
+      return res.status(400).json({ error: "trackId must be a number" });
+    }
+    whereClause = { trackId: parsedId };
+  }
+
   try {
-    const tabs = await prisma.tab.findMany();
+    const tabs = await prisma.tab.findMany({
+      where: whereClause,
+      orderBy: { createdAt: "asc" },
+    });
     res.json(tabs);
   } catch (error) {
     console.error(error);
@@ -17,10 +31,15 @@ router.get("/", async (req, res) => {
 // GET /api/tabs/:id
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
+  const { include } = req.query;
 
   try {
     const tab = await prisma.tab.findUnique({
       where: { id: Number(id) },
+      include:
+        include === "true"
+          ? { track: { include: { release: { include: { artist: true } } } } }
+          : {},
     });
 
     if (!tab) {
@@ -34,7 +53,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// POST /api/tabs - CLEANED UP
+// POST /api/tabs
 router.post("/", async (req, res) => {
   const { content, author, trackId } = req.body;
 

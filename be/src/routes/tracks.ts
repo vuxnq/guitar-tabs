@@ -36,7 +36,13 @@ router.get("/:id", async (req, res) => {
   try {
     const track = await prisma.track.findUnique({
       where: { id: Number(id) },
-      include: include === "true" ? { tabs: { omit: { content: true } } } : {},
+      include:
+        include === "true"
+          ? {
+              tabs: { omit: { content: true } },
+              release: { include: { artist: true } },
+            }
+          : {},
     });
 
     if (!track) {

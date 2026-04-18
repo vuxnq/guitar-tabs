@@ -36,7 +36,7 @@ router.get("/:id", async (req, res) => {
   try {
     const release = await prisma.release.findUnique({
       where: { id: Number(id) },
-      include: include === "true" ? { tracks: true } : {},
+      include: include === "true" ? { tracks: true, artist: true } : {},
     });
 
     if (!release) {
