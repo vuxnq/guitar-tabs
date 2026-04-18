@@ -42,7 +42,11 @@ router.get("/", async (req, res) => {
       }),
       prisma.tab.findMany({
         where: {
-          OR: [{ author: { contains: q } }, { content: { contains: q } }],
+          OR: [
+            { author: { contains: q } },
+            { content: { contains: q } },
+            { track: { title: { contains: q } } },
+          ],
         },
         select: {
           id: true,
