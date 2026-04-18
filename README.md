@@ -62,13 +62,13 @@ our API is fully modularized and supports the `?include=true` query parameter on
 - `GET /api/releases?artistId={id}` - gets releases (optionally filtered by artist)
 - `GET /api/releases/:id?include=true` - gets one release (optionally includes its tracks and artist info)
 - `POST /api/releases` - creates a release
-- `DELETE /api/releases/:id` - deletes a release
+- `DELETE /api/releases/:id?cleanup=true` - deletes a release. if `cleanup=true` and it was the last release, the artist is also deleted
 
 **tracks:**
 - `GET /api/tracks?releaseId={id}` - gets tracks (optionally filtered by release)
 - `GET /api/tracks/:id?include=true` - Gets one track (optionally includes its tabs, release, and artist info)
 - `POST /api/tracks` - creates a track
-- `DELETE /api/tracks/:id` - deletes a track
+- `DELETE /api/tracks/:id?cleanup=true` - deletes a track. if `cleanup=true`, it can trigger a chain deletion of empty releases and artists
 
 **tabs (main target):**
 - `GET /api/tabs?trackId={id}` - gets tabs (optionally filtered by track)
@@ -76,7 +76,7 @@ our API is fully modularized and supports the `?include=true` query parameter on
 - `POST /api/tabs` - creates a tab (requires an existing `trackId`)
 - `POST /api/tabs/smart` - **BFF endpoint:** takes flat payload (artist, release, track, tab) and safely creates the whole tree
 - `PUT /api/tabs/:id` - updates tab content or author
-- `DELETE /api/tabs/:id` - deletes the tab
+- `DELETE /api/tabs/:id?cleanup=true` - deletes the tab. if `cleanup=true`, it can trigger a chain deletion of now-empty tracks, releases, and artists
 
 **search:**
 - `GET /api/search?q={query}` - global search across artists, releases, tracks, and tab contents. returns a unified array of mixed types

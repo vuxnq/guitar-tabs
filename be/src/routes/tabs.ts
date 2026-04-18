@@ -103,11 +103,42 @@ router.put("/:id", async (req, res) => {
 // DELETE /api/tabs/:id
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
+  const { cleanup } = req.query;
 
   try {
-    await prisma.tab.delete({
+    const tab = await prisma.tab.findUnique({
       where: { id: Number(id) },
+      include: { track: { include: { release: true } } },
     });
+
+    if (!tab) return res.status(404).json({ error: "tab not found" });
+
+    const trackId = tab.trackId;
+    const releaseId = tab.track.releaseId;
+    const artistId = tab.track.release.artistId;
+
+    await prisma.tab.delete({ where: { id: Number(id) } });
+
+    if (cleanup === "true") {
+      const remainingTabs = await prisma.tab.count({ where: { trackId } });
+      if (remainingTabs === 0) {
+        await prisma.track.delete({ where: { id: trackId } });
+
+        const remainingTracks = await prisma.track.count({
+          where: { releaseId },
+        });
+        if (remainingTracks === 0) {
+          await prisma.release.delete({ where: { id: releaseId } });
+
+          const remainingReleases = await prisma.release.count({
+            where: { artistId },
+          });
+          if (remainingReleases === 0) {
+            await prisma.artist.delete({ where: { id: artistId } });
+          }
+        }
+      }
+    }
 
     res.status(204).send();
   } catch (error) {

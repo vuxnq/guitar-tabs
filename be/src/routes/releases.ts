@@ -69,8 +69,29 @@ router.post("/", async (req, res) => {
 
 // DELETE /api/releases/:id
 router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  const { cleanup } = req.query;
+
   try {
-    await prisma.release.delete({ where: { id: Number(req.params.id) } });
+    const release = await prisma.release.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!release) return res.status(404).json({ error: "release not found" });
+
+    const artistId = release.artistId;
+
+    await prisma.release.delete({ where: { id: Number(id) } });
+
+    if (cleanup === "true") {
+      const remainingReleases = await prisma.release.count({
+        where: { artistId },
+      });
+      if (remainingReleases === 0) {
+        await prisma.artist.delete({ where: { id: artistId } });
+      }
+    }
+
     res.status(204).send();
   } catch (error) {
     console.error(error);
