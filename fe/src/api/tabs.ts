@@ -2,67 +2,65 @@ import type { Tab } from "../types";
 import { apiUrl } from "./api";
 
 export async function getTabs(): Promise<Tab[]> {
-    const res = await fetch(apiUrl('/tabs'))
-    const data = await res.json() as Tab[]
-    return data
+  const res = await fetch(apiUrl("/tabs"));
+  const data = (await res.json()) as Tab[];
+  return data;
 }
 
-export async function getTab({ tabId }: {
-    tabId: number,
-}): Promise<Tab> {
-    const res = await fetch(apiUrl(`/tabs/${tabId}`))
-    const data = await res.json() as Tab
-    return data
+export async function getTab({ tabId }: { tabId: number }): Promise<Tab> {
+  const res = await fetch(apiUrl(`/tabs/${tabId}`));
+  const data = (await res.json()) as Tab;
+  return data;
 }
 
 export async function editTab({ tab }: { tab: Tab }) {
-    const res = await fetch(apiUrl(`/tabs/${tab.id}/edit`), {
-        method: 'PUT',
-        body: JSON.stringify(tab),
-    })
+  const res = await fetch(apiUrl(`/tabs/${tab.id}/edit`), {
+    method: "PUT",
+    body: JSON.stringify(tab),
+  });
 
-    return res
+  return res;
 }
 
 export type NewTabRequest = {
-    artistName: string,
-    releaseTitle: string,
-    trackTitle: string,
-    content: string,
-    author: string,
-}
+  artistName: string;
+  releaseTitle: string;
+  trackTitle: string;
+  content: string;
+  author: string;
+};
 
 export async function createTab(tab: NewTabRequest) {
-    console.log('new tab:', JSON.stringify(tab))
+  console.log("new tab:", JSON.stringify(tab));
 
-    const res = await fetch(apiUrl(`/tabs/smart`), {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(tab),
-    })
+  const res = await fetch(apiUrl(`/tabs/smart`), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(tab),
+  });
 
-    const createdTab = await res.json() as Tab
+  const createdTab = (await res.json()) as Tab;
 
-    return createdTab
+  return createdTab;
 }
 
 export type UpdateTabRequest = {
-    id: number
-    content: string
-    author: string
-}
+  id: number;
+  content: string;
+  author: string;
+};
 
 export async function updateTab(tab: UpdateTabRequest) {
-    const res = await fetch(apiUrl(`/tabs/${tab.id}`), {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(tab),
-    })
+  const res = await fetch(apiUrl(`/tabs/${tab.id}`), {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(tab),
+  });
 
-    const updatedTab = await res.json() as Tab
-    return updatedTab
+  const updatedTab = (await res.json()) as Tab;
+  return updatedTab;
 }
