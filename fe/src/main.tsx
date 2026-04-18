@@ -11,6 +11,7 @@ import { ErrorBoundary } from './components/ErrorBoundary.tsx'
 import { TabNew, action as tabNewAction, loader as tabNewLoader } from './routes/TabNew.tsx'
 import { Artists, loader as artistsLoader } from './routes/Artists.tsx'
 import { ArtistDetail, loader as artistDetailLoader } from './routes/ArtistDetail.tsx'
+import { TrackDetail, loader as trackDetailLoader } from './routes/TrackDetail.tsx'
 
 const router = createBrowserRouter([
     {
@@ -54,6 +55,11 @@ const router = createBrowserRouter([
                 element: <ArtistDetail />,
                 loader: artistDetailLoader,
             },
+            {
+                path: 'tracks/:trackId',
+                element: <TrackDetail />,
+                loader: trackDetailLoader,
+            }
         ],
     },
 ])

@@ -3,7 +3,7 @@ const API_URL = 'http://localhost:3000/api'
 type Filter = {
     include: boolean | null
     key: string
-    value: string | number | null
+    value: string | number | boolean | null
 }
 
 export function apiUrl(path: string, filters: Filter[] = []) {

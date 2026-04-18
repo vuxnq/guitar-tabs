@@ -7,8 +7,23 @@ export async function getArtists(): Promise<Artist[]> {
     return data
 }
 
-export async function getArtist({ artistId }: { artistId: number }): Promise<Artist> {
-    const res = await fetch(apiUrl(`artists/${artistId}`))
+export async function getArtist(
+    { 
+        artistId, 
+        include = false,
+    }: { 
+        artistId: number, 
+        include?: boolean,
+    }
+): Promise<Artist> {
+    const res = await fetch(apiUrl(`artists/${artistId}`, [
+        {
+            include: include,
+            key: 'include',
+            value: include,
+        }
+    ]))
+
     const data = await res.json() as Artist
     return data
 }
