@@ -12,22 +12,30 @@ export function TrackDetail() {
 
   return (
     <Box>
-      <Typography variant="h5" component="h1" gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
         {track.title} by {track.release.artist.name} from {track.release.title}
       </Typography>
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 2, alignItems: 'flex-start' }}>
-        <Box sx={{ width: { xs: 1, md: 1/5 }, flexShrink: 0, maxHeight: "80vh", overflow: 'auto', }}>
-          <Button 
-            variant="contained" 
-            fullWidth 
-            component={Link} 
+
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: '250px 1fr' },
+          gap: 2,
+          alignItems: 'start',
+        }}
+      >
+        <Box sx={{ position: { md: 'sticky' }, top: 80 }}>
+          <Button
+            variant="contained"
+            fullWidth
+            component={Link}
             to="/tabs/new"
             sx={{ mb: 2 }}
           >
             new tab
           </Button>
 
-          <Paper>
+          <Paper sx={{ maxHeight: "70vh", overflow: 'auto' }}>
             <List disablePadding>
               {track.tabs?.map((tab, index) => (
                 <ListItem key={tab.id} disablePadding>
@@ -44,9 +52,10 @@ export function TrackDetail() {
           </Paper>
         </Box>
 
-        <Box sx={{ flex: 1, minWidth: 0 }}>
-          <Outlet />
+        <Box sx={{ minWidth: 0  }}>
+            <Outlet />
         </Box>
+
       </Box>
     </Box>
   );

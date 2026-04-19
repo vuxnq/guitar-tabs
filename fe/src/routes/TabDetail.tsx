@@ -1,5 +1,6 @@
-import { useLoaderData, Form, Link as RouterLink, redirect, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
+import { useLoaderData, Form, Link, redirect, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
 import { Typography, Box, Paper, Button, Stack } from "@mui/material";
+import { TabContent } from "../components/TabContent";
 import { getTab, deleteTab } from "../api/tabs";
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -24,30 +25,22 @@ export function TabDetail() {
   const tab = useLoaderData<Awaited<ReturnType<typeof loader>>>();
 
   return (
-    <Paper>
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 3 }}>
-        <Typography variant="h5" component="h2" sx={{ flexGrow: 1 }}>
-          Author: {tab.author}
+    <Paper sx={{ p: 2 }}>
+      <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
+        <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
+          transcribed by {tab.author}
         </Typography>
-        <Button variant="outlined" size="small" component={RouterLink} to={`/tabs/${tab.id}/edit`}>
+        <Button variant="outlined" component={Link} to={`/tabs/${tab.id}/edit`}>
           edit
         </Button>
         <Form method="DELETE">
-          <Button type="submit" variant="outlined" color="error" size="small">
+          <Button type="submit" variant="outlined" color="error">
             delete
           </Button>
         </Form>
       </Stack>
 
-      <Box component="pre" sx={{ 
-        overflowX: "scroll", 
-        fontFamily: "monospace", 
-        border: "1px solid",
-        borderColor: "divider",
-        borderRadius: 1
-      }}>
-        {tab.content}
-      </Box>
+      <TabContent content={tab.content} />
     </Paper>
   );
 }

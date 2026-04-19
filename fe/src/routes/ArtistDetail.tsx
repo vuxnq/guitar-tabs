@@ -1,5 +1,6 @@
-import { useLoaderData, Link, type LoaderFunctionArgs } from "react-router";
-import { Typography, Box, Card, CardContent, CardMedia, List, ListItem, ListItemButton, ListItemText, Divider } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useLoaderData, Link, useLocation, type LoaderFunctionArgs } from "react-router";
+import { Typography, Box, Card, CardContent, List, ListItem, ListItemButton, ListItemText, Divider } from "@mui/material";
 import { Masonry } from "@mui/lab";
 import { getArtist } from "../api/artists";
 
@@ -10,6 +11,24 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export function ArtistDetail() {
   const artist = useLoaderData<Awaited<ReturnType<typeof loader>>>();
+  const location = useLocation();
+  
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (location.hash) {
+      const targetId = location.hash.replace("#", "");
+      const element = document.getElementById(targetId);
+      
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+          setHighlightedId(targetId);
+          setTimeout(() => { setHighlightedId(null); }, 2000); 
+        }, 100); 
+      }
+    }
+  }, [location.hash, artist.releases]);
 
   return (
     <Box>
@@ -21,27 +40,37 @@ export function ArtistDetail() {
       </Typography>
 
       <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={2}>
-        {artist.releases.map((release) => (
-          <Card key={release.id}>
-            <CardContent sx={{ pb: 1 }}>
-              <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-                {release.title}
-              </Typography>
-            </CardContent>
+        {artist.releases.map((release) => {
+          const cardId = `release-${release.id}`;
+          const isHighlighted = highlightedId === cardId;
 
-            <Divider />
+          return (
+            <Card key={release.id} id={cardId}
+              sx={{
+                bgcolor: isHighlighted ? 'action.selected' : '',
+                transition: 'background-color .5s ease-in-out',
+              }}
+            >
+              <CardContent sx={{ pb: 1 }}>
+                <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+                  {release.title}
+                </Typography>
+              </CardContent>
 
-            <List disablePadding>
-            {release.tracks.map((track) => (
-              <ListItem key={track.id} disablePadding>
-                <ListItemButton component={Link} to={`/tracks/${track.id}`}>
-                  <ListItemText primary={`${track.title}`} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-            </List>
-          </Card>
-        ))}
+              <Divider />
+
+              <List disablePadding>
+              {release.tracks.map((track) => (
+                <ListItem key={track.id} disablePadding>
+                  <ListItemButton component={Link} to={`/tracks/${track.id}`}>
+                    <ListItemText primary={`${track.title}`} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+              </List>
+            </Card>
+          );
+        })}
       </Masonry>
     </Box>
   );

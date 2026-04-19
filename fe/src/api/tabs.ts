@@ -59,5 +59,6 @@ export async function deleteTab({
   tabId: number;
   cleanup?: boolean;
 }) {
-  await fetch(apiUrl(`tabs/${tabId}`, { cleanup }), { method: "DELETE" });
+  const res = await fetch(apiUrl(`tabs/${tabId}`, { cleanup }), { method: "DELETE" });
+  return await res.json();
 }

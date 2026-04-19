@@ -53,7 +53,7 @@ export function SearchBar() {
         navigate(`/tracks/${newValue.id}`);
         break;
       case "tab":
-        navigate(`/tabs/${newValue.id}`);
+        navigate(`/tracks/${newValue.parentId}/tabs/${newValue.id}`);
         break;
       case "release":
         navigate(`/artists/${newValue.parentId}#release-${newValue.id}`);
