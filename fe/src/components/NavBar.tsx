@@ -1,13 +1,16 @@
-import { Link } from "react-router";
-import { AppBar, Button, Box, Typography, Container } from "@mui/material";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router";
+import { AppBar, Button, Box, Typography, Container, Dialog, DialogContent } from "@mui/material";
 import { SearchBar } from "./SearchBar";
 
 export function NavBar() {
+  const [searchOpen, setSearchOpen] = useState(false);
+
   return (
     <AppBar 
       position="sticky" 
       elevation={0} 
-      sx={{ borderBottom: 1, borderColor: 'divider', py: 2, }}
+      sx={{ borderBottom: 1, borderColor: 'divider', py: 2 }}
     >
       <Container maxWidth="lg">
         <Box 
@@ -15,8 +18,7 @@ export function NavBar() {
             display: 'flex', 
             justifyContent: 'space-between', 
             alignItems: 'center', 
-            flexWrap: 'wrap', 
-            gap: 2 
+            position: 'relative',
           }}
         >
           {/* logo */}
@@ -29,6 +31,19 @@ export function NavBar() {
             guitar tabs
           </Typography>
 
+          {/* desktop searchbar */}
+          <Box
+            sx={{
+              display: { xs: 'none', md: 'flex' },
+              position: 'absolute',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 1/3,
+            }}
+          >
+            <SearchBar />
+          </Box>
+
           {/* links, button */}
           <Box sx={{ display: 'flex', gap: { xs: 1, sm: 2 }, alignItems: 'center' }}>
             <Button color="inherit" sx={{ color: 'text.secondary' }} component={Link} to="/artists"> artists </Button>
@@ -37,10 +52,15 @@ export function NavBar() {
           </Box>
         </Box>
 
-        {/* search */}
-        {/* TODO: only display this in smaller screen */}
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-          <Box sx={{ width: '100%', maxWidth: '700px' }}>
+        {/* mobile searchbar */}
+        <Box 
+          sx={{ 
+            display: { xs: 'flex', md: 'none' },
+            justifyContent: 'center', 
+            mt: 2 
+          }}
+        >
+          <Box sx={{ width: '100%' }}>
             <SearchBar />
           </Box>
         </Box>
