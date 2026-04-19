@@ -119,28 +119,35 @@ router.delete("/:id", async (req, res) => {
 
     await prisma.tab.delete({ where: { id: Number(id) } });
 
+    let deletedTrack = false;
+    let deletedRelease = false;
+    let deletedArtist = false;
+
     if (cleanup === "true") {
       const remainingTabs = await prisma.tab.count({ where: { trackId } });
       if (remainingTabs === 0) {
         await prisma.track.delete({ where: { id: trackId } });
+        deletedTrack = true;
 
         const remainingTracks = await prisma.track.count({
           where: { releaseId },
         });
         if (remainingTracks === 0) {
           await prisma.release.delete({ where: { id: releaseId } });
+          deletedRelease = true;
 
           const remainingReleases = await prisma.release.count({
             where: { artistId },
           });
           if (remainingReleases === 0) {
             await prisma.artist.delete({ where: { id: artistId } });
+            deletedArtist = true;
           }
         }
       }
     }
 
-    res.status(204).send();
+    res.json({ deletedTrack, deletedRelease, deletedArtist, artistId });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "failed to delete the tab" });
