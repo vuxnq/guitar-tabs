@@ -58,6 +58,6 @@ export async function deleteTab({
 }: {
   tabId: number;
   cleanup?: boolean;
-}): Promise<void> {
+}) {
   await fetch(apiUrl(`tabs/${tabId}`, { cleanup }), { method: "DELETE" });
 }

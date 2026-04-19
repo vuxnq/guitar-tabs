@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "search", element: <Search />, loader: searchLoader },
 
-      // Artists
+      // artists
       { path: "artists", element: <Artists />, loader: artistsLoader },
       {
         path: "artists/:artistId",
@@ -50,26 +50,29 @@ const router = createBrowserRouter([
         loader: artistDetailLoader,
       },
 
-      // Tracks
+      // tracks
       {
         path: "tracks/:trackId",
         element: <TrackDetail />,
         loader: trackDetailLoader,
+        children: [
+          // TODO: index
+          {
+            path: "tabs/:tabId",
+            element: <TabDetail />,
+            loader: tabDetailLoader,
+            action: tabDetailAction,
+          },
+        ],
       },
 
-      // Tabs
+      // tabs
       { path: "tabs", element: <Tabs />, loader: tabsLoader },
       {
         path: "tabs/new",
         element: <TabNew />,
         loader: tabNewLoader,
         action: tabNewAction,
-      },
-      {
-        path: "tabs/:tabId",
-        element: <TabDetail />,
-        loader: tabDetailLoader,
-        action: tabDetailAction,
       },
       {
         path: "tabs/:tabId/edit",

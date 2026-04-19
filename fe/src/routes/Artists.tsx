@@ -1,6 +1,5 @@
 import { useLoaderData, Link } from "react-router";
-import { Typography, Box, Card, CardContent, CardActionArea, CardMedia } from "@mui/material";
-import { Masonry } from "@mui/lab";
+import { Typography, Box, Card, CardContent, CardActionArea } from "@mui/material";
 import { getArtists } from "../api/artists";
 
 export async function loader() {
@@ -16,19 +15,19 @@ export function Artists() {
         artists
       </Typography>
 
-      <Masonry columns={{ xs: 1, sm: 2, md: 4, lg: 5 }} spacing={2}>
-        {artists.map((artist) => (
-          <Card key={artist.id}>
-            <CardActionArea component={Link} to={`/artists/${artist.id}`}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        {artists.map((tab) => (
+          <Card key={tab.id} sx={{ display: 'flex' }}>
+            <CardActionArea component={Link} to={`/artists/${tab.id}`}>
               <CardContent sx={{ pb: 1 }}>
                 <Typography variant="h6" component="div" align="center">
-                  {artist.name}
+                  {tab.name}
                 </Typography>
               </CardContent>
             </CardActionArea>
           </Card>
         ))}
-      </Masonry>
+      </Box>
     </Box>
   );
 }

@@ -17,7 +17,7 @@ export async function action({ request }: ActionFunctionArgs) {
   };
 
   const newTab = await createTab(payload);
-  return redirect(`/tabs/${newTab.id}`);
+  return redirect(`/tracks/${newTab.trackId}/tabs/${newTab.id}`);
 }
 
 export function TabNew() {

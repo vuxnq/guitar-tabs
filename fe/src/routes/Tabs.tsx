@@ -15,7 +15,7 @@ export function Tabs() {
       <ul>
         {tabs.map((tab) => (
           <li key={tab.id}>
-            <Link to={`/tabs/${tab.id}`}>
+            <Link to={`/tracks/${tab.trackId}/tabs/${tab.id}`}>
               Tab #{tab.id} by {tab.author}
             </Link>
           </li>
