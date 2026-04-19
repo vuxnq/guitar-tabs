@@ -1,8 +1,15 @@
-import { Form, redirect, type ActionFunctionArgs } from "react-router";
+import { useState, useEffect } from "react";
+import { Form, redirect, useLoaderData, useLocation, type ActionFunctionArgs } from "react-router";
+import { Box, Typography, Paper, Button, TextField, Autocomplete, Stack } from "@mui/material";
 import { createTab } from "../api/tabs";
+import { getArtists } from "../api/artists";
+import { getReleases } from "../api/releases";
+import { getTracks } from "../api/tracks";
+import type { Release, Track } from "../types";
 
 export async function loader() {
-  return null;
+  const artists = await getArtists();
+  return { artists };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -21,45 +28,123 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export function TabNew() {
+  const { artists } = useLoaderData<typeof loader>();
+
+  const location = useLocation();
+  const navState = location.state as { 
+    artistName?: string; 
+    releaseTitle?: string; 
+    trackTitle?: string; 
+  } | null;
+
+  const [artistName, setArtistName] = useState(navState?.artistName || "");
+  const [releaseTitle, setReleaseTitle] = useState(navState?.releaseTitle || "");
+  const [trackTitle, setTrackTitle] = useState(navState?.trackTitle || "");
+
+  const [releases, setReleases] = useState<Release[]>([]);
+  const [tracks, setTracks] = useState<Track[]>([]);
+
+  // artist change - fetch releases
+  useEffect(() => {
+    if (!artistName.trim()) { setReleases([]); return; }
+    
+    const matchedArtist = artists.find(
+      (a) => a.name.toLowerCase() === artistName.trim().toLowerCase()
+    );
+
+    if (matchedArtist) {
+      getReleases({ artistId: matchedArtist.id }).then(setReleases);
+    } else {
+      setReleases([]);
+    }
+  }, [artistName, artists]);
+
+  // release change - fetch tracks
+  useEffect(() => {
+    if (!releaseTitle.trim()) { setTracks([]); return; }
+
+    const matchedRelease = releases.find(
+      (r) => r.title.toLowerCase() === releaseTitle.trim().toLowerCase()
+    );
+
+    if (matchedRelease) {
+      getTracks({ releaseId: matchedRelease.id }).then(setTracks);
+    } else {
+      setTracks([]);
+    }
+  }, [releaseTitle, releases]);
+
   return (
-    <div>
-      <h1>Create New Tab (Smart Form)</h1>
-      <Form
-        method="POST"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "1rem",
-          maxWidth: "400px",
-        }}
-      >
-        <label>
-          Artist Name:
-          <input type="text" name="artistName" required />
-        </label>
-        <label>
-          Release Title:
-          <input type="text" name="releaseTitle" required />
-        </label>
-        <label>
-          Track Title:
-          <input type="text" name="trackTitle" required />
-        </label>
-        <label>
-          Author (Your Name):
-          <input type="text" name="author" required />
-        </label>
-        <label>
-          Tab Content:
-          <textarea
-            name="content"
-            rows={10}
-            required
-            style={{ fontFamily: "monospace", width: "100%" }}
-          ></textarea>
-        </label>
-        <button type="submit">Save Tab</button>
-      </Form>
-    </div>
+    <Box>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+        new tab
+      </Typography>
+
+      <Paper sx={{ p: 3 }}>
+        <Form method="POST">
+          <Stack spacing={3}>
+            <Autocomplete
+              freeSolo
+              options={artists.map((a) => a.name)}
+              inputValue={artistName}
+              onInputChange={(_, newValue) => setArtistName(newValue)}
+              renderInput={(params) => (
+                <TextField {...params} label="artist name" name="artistName" required />
+              )}
+            />
+
+            <Autocomplete
+              freeSolo
+              options={releases.map((r) => r.title)}
+              inputValue={releaseTitle}
+              onInputChange={(_, newValue) => setReleaseTitle(newValue)}
+              renderInput={(params) => (
+                <TextField {...params} label="release title" name="releaseTitle" required />
+              )}
+            />
+
+            <Autocomplete
+              freeSolo
+              options={tracks.map((t) => t.title)}
+              inputValue={trackTitle}
+              onInputChange={(_, newValue) => setTrackTitle(newValue)}
+              renderInput={(params) => (
+                <TextField {...params} label="track title" name="trackTitle" required />
+              )}
+            />
+
+            <TextField
+              label="transcribed by (your name)"
+              name="author"
+              required
+            />
+
+            <TextField
+              label="tab content"
+              name="content"
+              multiline
+              minRows={15}
+              required
+              InputProps={{
+                sx: { 
+                  fontFamily: "monospace", 
+                  fontSize: "0.9rem" 
+                }
+              }}
+            />
+
+            <Button 
+              type="submit" 
+              variant="contained" 
+              size="large" 
+              disableElevation
+              sx={{ py: 1.5, fontWeight: "bold" }}
+            >
+              save tab
+            </Button>
+          </Stack>
+        </Form>
+      </Paper>
+    </Box>
   );
 }

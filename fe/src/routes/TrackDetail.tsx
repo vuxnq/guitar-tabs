@@ -30,6 +30,11 @@ export function TrackDetail() {
             fullWidth
             component={Link}
             to="/tabs/new"
+            state={{
+              artistName: track.release.artist.name,
+              releaseTitle: track.release.title,
+              trackTitle: track.title,
+            }}
             sx={{ mb: 2 }}
           >
             new tab
