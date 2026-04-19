@@ -35,8 +35,8 @@ export function ArtistDetail() {
       <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold' }}>
         {artist.name}
       </Typography>
-      <Typography variant="h5" component="h2" gutterBottom>
-        discography 
+      <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold', color: 'text.secondary' }}>
+        discography
       </Typography>
 
       <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={2}>

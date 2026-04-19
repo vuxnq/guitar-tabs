@@ -70,6 +70,7 @@ export function SearchBar() {
       inputValue={inputValue}
       onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
       onChange={handleSelection}
+      loadingText="loading..."
       filterOptions={(x) => x}
       isOptionEqualToValue={(option, value) => option.id === value.id && option.type === value.type}
       getOptionLabel={(option) => {
@@ -86,7 +87,6 @@ export function SearchBar() {
       groupBy={(option) => option.type}
       options={options}
       loading={loading}
-      autoHighlight
       freeSolo
       renderInput={(params) => <TextField {...params} placeholder="search..." />}
     />
