@@ -1,6 +1,8 @@
-import { useLoaderData, Form, Link, redirect, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
+import { useState } from "react";
+import { useLoaderData, useSubmit, Form, Link, redirect, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
 import { Typography, Box, Paper, Button, Stack } from "@mui/material";
 import { TabContent } from "../components/TabContent";
+import { ConfirmDialog } from "../components/ConfirmDialog";
 import { getTab, deleteTab } from "../api/tabs";
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -23,6 +25,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 export function TabDetail() {
   const tab = useLoaderData<Awaited<ReturnType<typeof loader>>>();
+  const submit = useSubmit();
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleDelete = () => {
+    setDialogOpen(false);
+    submit(null, { method: "DELETE" });
+  };
 
   return (
     <Paper sx={{ p: 2 }}>
@@ -33,14 +42,24 @@ export function TabDetail() {
         <Button variant="outlined" component={Link} to={`/tabs/${tab.id}/edit`}>
           edit
         </Button>
-        <Form method="DELETE">
-          <Button type="submit" variant="outlined" color="error">
-            delete
-          </Button>
-        </Form>
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={() => setDialogOpen(true)}
+        >
+          delete
+        </Button>
       </Stack>
 
       <TabContent content={tab.content} />
+
+      <ConfirmDialog
+        open={dialogOpen}
+        title="delete tab"
+        description="are you sure you want to delete this tab? this action cannot be undone."
+        onCancel={() => setDialogOpen(false)}
+        onConfirm={handleDelete}
+      />
     </Paper>
   );
 }

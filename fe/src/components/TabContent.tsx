@@ -21,7 +21,6 @@ export function TabContent({ content }: TabContentProps) {
         border: "1px solid",
         borderColor: "divider",
         fontFamily: "monospace",
-        whiteSpace: "pre-wrap",
       }}
     >
       {parts.map((part, index) => {

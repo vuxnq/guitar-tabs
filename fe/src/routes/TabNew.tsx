@@ -75,7 +75,7 @@ export function TabNew() {
   }, [releaseTitle, releases]);
 
   return (
-    <Box>
+    <Box sx={{ maxWidth: 800, mx: "auto" }}>
       <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
         new tab
       </Typography>
@@ -123,12 +123,14 @@ export function TabNew() {
               label="tab content"
               name="content"
               multiline
-              minRows={15}
+              rows={15}
               required
-              InputProps={{
-                sx: { 
-                  fontFamily: "monospace", 
-                  fontSize: "0.9rem" 
+              sx={{
+                "& .MuiInputBase-input": {
+                  whiteSpace: "pre", 
+                  overflowX: "auto !important",
+                  fontFamily: "monospace",
+                  fontSize: "0.9rem",
                 }
               }}
             />
@@ -137,8 +139,6 @@ export function TabNew() {
               type="submit" 
               variant="contained" 
               size="large" 
-              disableElevation
-              sx={{ py: 1.5, fontWeight: "bold" }}
             >
               save tab
             </Button>
