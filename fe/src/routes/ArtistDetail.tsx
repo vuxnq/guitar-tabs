@@ -51,7 +51,7 @@ export function ArtistDetail() {
                 transition: 'background-color .5s ease-in-out',
               }}
             >
-              <CardContent sx={{ pb: 1 }}>
+              <CardContent sx={{ pb: 2 }}>
                 <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
                   {release.title}
                 </Typography>

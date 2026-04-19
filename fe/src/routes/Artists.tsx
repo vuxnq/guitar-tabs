@@ -19,7 +19,7 @@ export function Artists() {
         {artists.map((tab) => (
           <Card key={tab.id} sx={{ display: 'flex' }}>
             <CardActionArea component={Link} to={`/artists/${tab.id}`}>
-              <CardContent sx={{ pb: 1 }}>
+              <CardContent sx={{ pb: 2 }}>
                 <Typography variant="h6" component="div" align="center">
                   {tab.name}
                 </Typography>
