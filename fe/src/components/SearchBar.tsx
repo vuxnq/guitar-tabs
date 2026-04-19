@@ -63,7 +63,7 @@ export function SearchBar() {
 
   return (
     <Autocomplete
-      sx={{ width: 1/2 }}
+      sx={{ width: 1 }}
       open={open}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}

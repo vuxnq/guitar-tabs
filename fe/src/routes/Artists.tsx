@@ -1,4 +1,6 @@
 import { useLoaderData, Link } from "react-router";
+import { Typography, Box, Card, CardContent, CardActionArea, CardMedia } from "@mui/material";
+import { Masonry } from "@mui/lab";
 import { getArtists } from "../api/artists";
 
 export async function loader() {
@@ -6,19 +8,27 @@ export async function loader() {
 }
 
 export function Artists() {
-  const artists = useLoaderData();
+  const artists = useLoaderData<Awaited<ReturnType<typeof loader>>>();
 
   return (
-    <div>
-      <h1>Artists</h1>
-      <ul>
+    <Box>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+        artists
+      </Typography>
+
+      <Masonry columns={{ xs: 1, sm: 2, md: 4, lg: 5 }} spacing={2}>
         {artists.map((artist) => (
-          <li key={artist.id}>
-            <Link to={`/artists/${artist.id}`}>{artist.name}</Link>
-          </li>
+          <Card key={artist.id}>
+            <CardActionArea component={Link} to={`/artists/${artist.id}`}>
+              <CardContent sx={{ pb: 1 }}>
+                <Typography variant="h6" component="div" align="center">
+                  {artist.name}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
         ))}
-      </ul>
-      <pre>{JSON.stringify(artists, null, 2)}</pre>
-    </div>
+      </Masonry>
+    </Box>
   );
 }
