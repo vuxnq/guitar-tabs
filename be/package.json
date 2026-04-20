@@ -5,10 +5,10 @@
   "description": "TODO: Write description or instructions",
   "main": "index.js",
   "scripts": {
+    "setup": "npm install && prisma generate && prisma db push && prisma db seed",
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts",
     "prettier": "prettier --write .",
-    "setup": "npm install && prisma db push && prisma db seed",
     "db:reset": "prisma migrate reset --force && prisma db seed"
   },
   "keywords": [],

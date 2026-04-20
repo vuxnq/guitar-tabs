@@ -1,85 +1,25 @@
-# plan
+# guitar tabs.
 
-### idea
-the core idea is a community database for guitar tabs
+a community-driven database for your favorite guitar tablatures.
 
-to keep the data clean and avoid duplicate mess, we are categorizing tabs logically: artists -> releases -> tracks -> tabs
+instead of forcing users to click through multiple pages to add an artist, then an album, then a track, this app uses a single "smart form" that handles hierarchical creation in one go.
 
-instead of forcing users to click through multiple pages to add an artist, then an album, then a track, we're going to build a single "smart form" that handles all of that in one go
+this repository contains both the frontend (`fe/`) and backend (`be/`) applications.
 
-### database scheme
-prisma (sqlite)
+## requirements
+- [node.js](https://nodejs.org/) (v18+)
+- npm
 
-- **artist**
-  - `id` (pk)
-  - `name` (string)
-- **release**
-  - `id` (pk)
-  - `title` (string)
-  - `artistId` (fk -> artist)
-- **track**
-  - `id` (pk)
-  - `title` (string)
-  - `releaseId` (fk -> release)
-- **tab** (main CRUD target)
-  - `id` (pk)
-  - `content` (text) - the raw ASCII tab text
-  - `author` (string) - who transcribed it
-  - `trackId` (fk -> track)
-  - `createdAt` (datetime)
+## usage
+```sh
+# 1. install all dependencies, generate prisma client, push schema, and seed database
+npm run setup
 
-### front-end
-react and react router
+# 2. start both frontend and backend concurrently
+npm run dev
+```
 
-- `/` **(home):** simple landing page with our names, project info, and quick links
-- `/artists` **(artists list):** displays a list of all artists in the database
-- `/artists/:id` **(artist detail):** shows the artist's discography (all releases and their tracks)
-- `/tracks/:id` **(track detail):** shows all available tabs for a specific track
-- `/tabs/:id` **(tab detail):** shows the full tablature using a `<pre>` tag so the monospace formatting doesn't break. "edit" and "delete" buttons live here
-- `/tabs/new` **(create):** this is where our smart form lives
-- `/tabs/:id/edit` **(update):** a prefilled form for fixing mistakes in the tab content or author name
-
-### smart form
-to make adding tabs painless, the `/tabs/new` page will use react autocomplete components (like MUI's `Autocomplete` with `freeSolo` enabled)
-
-1. **artist:** user starts typing. they can pick an existing artist or create a new one
-2. **release:** unlocks after picking an artist. shows only releases for that specific artist. pick or create new
-3. **track:** unlocks after picking a release. select or create
-4. **tab content:** a giant `<textarea>` for the tab itself, plus a small input for the author's name
-5. **submit:** sends data to the `POST /api/tabs/smart` endpoint, which handles the cascading creation of any missing entities
-
-### endpoints
-
-our API is fully modularized and supports the `?include=true` query parameter on GET requests to easily fetch nested relations without multiple roundtrips
-
-**artists:**
-- `GET /api/artists` - gets all artists
-- `GET /api/artists/:id?include=true` - gets one artist (optionally includes their releases and tracks)
-- `POST /api/artists` - creates an artist
-- `DELETE /api/artists/:id` - deletes an artist (cascades to releases, tracks, and tabs)
-
-**releases:**
-- `GET /api/releases?artistId={id}` - gets releases (optionally filtered by artist)
-- `GET /api/releases/:id?include=true` - gets one release (optionally includes its tracks and artist info)
-- `POST /api/releases` - creates a release
-- `DELETE /api/releases/:id?cleanup=true` - deletes a release. if `cleanup=true` and it was the last release, the artist is also deleted
-
-**tracks:**
-- `GET /api/tracks?releaseId={id}` - gets tracks (optionally filtered by release)
-- `GET /api/tracks/:id?include=true` - Gets one track (optionally includes its tabs, release, and artist info)
-- `POST /api/tracks` - creates a track
-- `DELETE /api/tracks/:id?cleanup=true` - deletes a track. if `cleanup=true`, it can trigger a chain deletion of empty releases and artists
-
-**tabs (main target):**
-- `GET /api/tabs?trackId={id}` - gets tabs (optionally filtered by track)
-- `GET /api/tabs/:id?include=true` - gets one tab (optionally includes its full nested hierarchy)
-- `POST /api/tabs` - creates a tab (requires an existing `trackId`)
-- `POST /api/tabs/smart` - **BFF endpoint:** takes flat payload (artist, release, track, tab) and safely creates the whole tree
-- `PUT /api/tabs/:id` - updates tab content or author
-- `DELETE /api/tabs/:id?cleanup=true` - deletes the tab. if `cleanup=true`, it can trigger a chain deletion of now-empty tracks, releases, and artists
-
-**search:**
-- `GET /api/search?q={query}` - global search across artists, releases, tracks, and tab contents. returns a unified array of mixed types
+for more details, check out [`be/README.md`](be/README.md) and [`fe/README.md`](fe/README.md).
 
 ---
 
