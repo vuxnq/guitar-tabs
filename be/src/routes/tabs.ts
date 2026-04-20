@@ -5,7 +5,7 @@ const router = Router();
 
 // GET /api/tabs
 router.get("/", async (req, res) => {
-  const { trackId } = req.query;
+  const { trackId, include } = req.query;
 
   let whereClause = {};
   if (trackId) {
@@ -19,7 +19,11 @@ router.get("/", async (req, res) => {
   try {
     const tabs = await prisma.tab.findMany({
       where: whereClause,
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
+      include:
+        include === "true"
+          ? { track: { include: { release: { include: { artist: true } } } } }
+          : {},
     });
     res.json(tabs);
   } catch (error) {
