@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { Autocomplete, TextField, CircularProgress, Box, Typography } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { globalSearch, type SearchResult } from "../api/search";
 
 export function SearchBar() {
@@ -14,9 +14,15 @@ export function SearchBar() {
   useEffect(() => {
     let active = true;
 
-    if (inputValue.trim() === "") { setOptions([]); setLoading(false); return; }
+    if (inputValue.trim() === "") {
+      setTimeout(() => {
+        setOptions([]);
+        setLoading(false);
+      }, 0)
+      return;
+    }
 
-    setLoading(true);
+    setTimeout(() => setLoading(true), 0);
 
     const timer = setTimeout(async () => {
       try {
@@ -37,7 +43,7 @@ export function SearchBar() {
     };
   }, [inputValue]);
 
-  const handleSelection = (event: any, newValue: SearchResult | null) => {
+  const handleSelection = (event: React.SyntheticEvent, newValue: string | SearchResult | null) => {
     if (!newValue) return;
 
     if (typeof newValue === "string") {

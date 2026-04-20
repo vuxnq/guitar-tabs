@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useLoaderData, useSubmit, Form, Link, redirect, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
-import { Typography, Box, Paper, Button, Stack } from "@mui/material";
+import { useLoaderData, useSubmit, Link, redirect, type LoaderFunctionArgs, type ActionFunctionArgs } from "react-router";
+import { Typography, Paper, Button, Stack } from "@mui/material";
 import { TabContent } from "../components/TabContent";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { getTab, deleteTab } from "../api/tabs";

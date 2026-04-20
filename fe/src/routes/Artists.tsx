@@ -1,4 +1,4 @@
-import { useLoaderData, Link } from "react-router";
+import { useLoaderData } from "react-router";
 import { Typography, Box } from "@mui/material";
 import { ArtistCard } from "../components/cards/ArtistCard";
 import { getArtists } from "../api/artists";

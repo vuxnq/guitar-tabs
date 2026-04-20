@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Stack, Paper, Grid } from "@mui/material";
+import { Box, Typography, Button, Stack, Paper } from "@mui/material";
 import { Link } from "react-router";
 
 export function Home() {

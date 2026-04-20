@@ -1,4 +1,4 @@
-import { Typography, Box, Paper, Button, Stack } from "@mui/material";
+import { Typography, Box, Paper } from "@mui/material";
 
 export function TabIndex() {
   return (

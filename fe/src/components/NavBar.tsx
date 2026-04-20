@@ -1,11 +1,8 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router";
-import { AppBar, Button, Box, Typography, Container, Dialog, DialogContent } from "@mui/material";
+import { Link } from "react-router";
+import { AppBar, Button, Box, Typography, Container } from "@mui/material";
 import { SearchBar } from "./SearchBar";
 
 export function NavBar() {
-  const [searchOpen, setSearchOpen] = useState(false);
-
   return (
     <AppBar 
       position="sticky" 

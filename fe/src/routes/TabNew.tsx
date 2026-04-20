@@ -46,7 +46,10 @@ export function TabNew() {
 
   // artist change - fetch releases
   useEffect(() => {
-    if (!artistName.trim()) { setReleases([]); return; }
+    if (!artistName.trim()) {
+      setTimeout(() => setReleases([]), 0);
+      return;
+    }
     
     const matchedArtist = artists.find(
       (a) => a.name.toLowerCase() === artistName.trim().toLowerCase()
@@ -55,13 +58,16 @@ export function TabNew() {
     if (matchedArtist) {
       getReleases({ artistId: matchedArtist.id }).then(setReleases);
     } else {
-      setReleases([]);
+      setTimeout(() => setReleases([]), 0);
     }
   }, [artistName, artists]);
 
   // release change - fetch tracks
   useEffect(() => {
-    if (!releaseTitle.trim()) { setTracks([]); return; }
+    if (!releaseTitle.trim()) {
+      setTimeout(() => setTracks([]), 0);
+      return;
+    }
 
     const matchedRelease = releases.find(
       (r) => r.title.toLowerCase() === releaseTitle.trim().toLowerCase()
@@ -70,7 +76,7 @@ export function TabNew() {
     if (matchedRelease) {
       getTracks({ releaseId: matchedRelease.id }).then(setTracks);
     } else {
-      setTracks([]);
+      setTimeout(() => setTracks([]), 0);
     }
   }, [releaseTitle, releases]);
 

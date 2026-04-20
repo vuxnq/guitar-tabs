@@ -62,7 +62,7 @@ const router = createBrowserRouter([
         element: <ArtistDetail />,
         loader: artistDetailLoader,
         handle: { 
-          crumb: (data: any) => [
+          crumb: (data: Awaited<ReturnType<typeof artistDetailLoader>>) => [
             { label: "artists", path: "/artists" },
             { label: data?.name || "artist", path: `/artists/${data?.id}` }
           ] 
@@ -75,7 +75,7 @@ const router = createBrowserRouter([
         element: <TrackDetail />,
         loader: trackDetailLoader,
         handle: { 
-          crumb: (data: any) => [
+          crumb: (data: Awaited<ReturnType<typeof trackDetailLoader>>) => [
             { label: "artists", path: "/artists" },
             { label: data?.release?.artist?.name || "artist", path: `/artists/${data?.release?.artist?.id}` },
             { label: data?.release?.title || "release", path: `/artists/${data?.release?.artist?.id}#release-${data?.release?.id}` },
@@ -89,7 +89,7 @@ const router = createBrowserRouter([
             element: <TabDetail />,
             loader: tabDetailLoader,
             action: tabDetailAction,
-            handle: { crumb: (data: any) => ({ label: `tab by ${data?.author || 'author'}`, path: "#" }) },
+            handle: { crumb: (data: Awaited<ReturnType<typeof tabDetailLoader>>) => ({ label: `tab by ${data?.author || 'author'}`, path: "#" }) },
           },
         ],
       },
