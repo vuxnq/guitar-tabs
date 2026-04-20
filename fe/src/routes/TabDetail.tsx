@@ -35,10 +35,15 @@ export function TabDetail() {
 
   return (
     <Paper sx={{ p: 2 }}>
-      <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
-        <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
-          transcribed by {tab.author}
-        </Typography>
+      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+        <Stack sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="h2">
+            transcribed by {tab.author}
+          </Typography>
+          <Typography>
+            created: {new Date(tab.createdAt).toLocaleString()}
+          </Typography>
+        </Stack>
         <Button variant="outlined" component={Link} to={`/tabs/${tab.id}/edit`}>
           edit
         </Button>

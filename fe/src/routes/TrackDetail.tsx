@@ -13,7 +13,7 @@ export function TrackDetail() {
   return (
     <Box>
       <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
-        {track.title} by {track.release.artist.name} from {track.release.title}
+        {track.title} by {track.release.artist?.name} from {track.release.title}
       </Typography>
 
       <Box
@@ -31,7 +31,7 @@ export function TrackDetail() {
             component={Link}
             to="/tabs/new"
             state={{
-              artistName: track.release.artist.name,
+              artistName: track.release.artist?.name,
               releaseTitle: track.release.title,
               trackTitle: track.title,
             }}

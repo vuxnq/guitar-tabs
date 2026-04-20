@@ -43,7 +43,7 @@ export function SearchBar() {
     };
   }, [inputValue]);
 
-  const handleSelection = (event: React.SyntheticEvent, newValue: string | SearchResult | null) => {
+  const handleSelection = (_event: React.SyntheticEvent, newValue: string | SearchResult | null) => {
     if (!newValue) return;
 
     if (typeof newValue === "string") {
@@ -74,19 +74,21 @@ export function SearchBar() {
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       inputValue={inputValue}
-      onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
+      onInputChange={(_event, newInputValue) => setInputValue(newInputValue)}
       onChange={handleSelection}
       loadingText="loading..."
       filterOptions={(x) => x}
-      isOptionEqualToValue={(option, value) => option.id === value.id && option.type === value.type}
-      getOptionLabel={(option) => {
+      isOptionEqualToValue={(option, value) => {
+        if (typeof option === "string" || typeof value === "string") return option === value;
+        return option.id === value.id && option.type === value.type;
+      }}
+      getOptionLabel={(option): string => {
         if (typeof option === "string") return option; 
-
         switch (option.type) {
-          case "artist": return option.name; break;
-          case "track": return option.title; break;
-          case "tab": return `${option.trackTitle} by ${option.author}`; break;
-          case "release": return option.title; break;
+          case "artist": return option.name || ""; 
+          case "track": return option.title || ""; 
+          case "tab": return `${option.trackTitle || "unknown track"} by ${option.author || "unknown author"}`; 
+          case "release": return option.title || ""; 
           default: return "";
         }
       }}

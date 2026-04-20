@@ -28,7 +28,7 @@ export function TabContent({ content }: TabContentProps) {
           return (
             <Box key={index} component="span"
               sx={{
-                color: "primary.main",
+                color: "secondary.main",
                 fontWeight: "bold",
               }}
             >

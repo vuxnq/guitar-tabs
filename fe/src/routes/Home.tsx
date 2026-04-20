@@ -51,7 +51,7 @@ export function Home() {
           <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold' }}>
             smart organization
           </Typography>
-          <Typography paragraph>
+          <Typography>
             to keep the data clean and avoid the duplicate mess, we categorize everything logically in our database.
           </Typography>
         </Paper>

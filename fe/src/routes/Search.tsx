@@ -42,7 +42,7 @@ export function Search() {
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
             {artists.map((artist) => (
-              <ArtistCard id={artist.id} name={artist.name} />
+              <ArtistCard id={artist.id} name={artist.name!} />
             ))}
           </Box>
         </Box>
@@ -58,9 +58,9 @@ export function Search() {
             {releases.map((release) => (
               <ReleaseCard key={`release-${release.id}`}
                 id={release.id}
-                artistId={release.parentId}
-                title={release.title}
-                artistName={release.artistName}
+                artistId={release.parentId!}
+                title={release.title!}
+                artistName={release.artistName!}
               />
             ))}
           </Masonry>
@@ -77,9 +77,9 @@ export function Search() {
             {tracks.map((track) => (
               <TrackCard key={`track-${track.id}`}
                 id={track.id}
-                title={track.title}
-                releaseTitle={track.releaseTitle}
-                artistName={track.artistName}
+                title={track.title!}
+                releaseTitle={track.releaseTitle!}
+                artistName={track.artistName!}
               />
             ))}
           </Masonry>
@@ -96,10 +96,10 @@ export function Search() {
             {tabs.map((tab) => (
               <TabCard key={`tab-${tab.id}`}
                 id={tab.id}
-                trackId={tab.parentId}
-                trackTitle={tab.trackTitle}
-                artistName={tab.artistName}
-                author={tab.author}
+                trackId={tab.parentId!}
+                trackTitle={tab.trackTitle!}
+                artistName={tab.artistName!}
+                author={tab.author!}
               />
             ))}
           </Masonry>

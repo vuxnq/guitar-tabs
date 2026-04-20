@@ -3,6 +3,7 @@ import { apiUrl } from "./api";
 export type SearchResult = {
   type: "artist" | "release" | "track" | "tab";
   id: number;
+  parentId?: number;
   name?: string;
   title?: string;
   author?: string;

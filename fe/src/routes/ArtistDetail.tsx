@@ -41,7 +41,7 @@ export function ArtistDetail() {
       </Typography>
 
       <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={2}>
-        {artist.releases.map((release) => (
+        {(artist.releases || []).map((release) => (
           <DiscographyCard
             key={release.id}
             id={release.id}
