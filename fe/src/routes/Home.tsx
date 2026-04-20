@@ -4,26 +4,34 @@ import { Link } from "react-router";
 export function Home() {
   return (
     <Box sx={{ my: 8 }}>
-      <Box sx={{ textAlign: 'center', mb: 10 }}>
+      <Box 
+        sx={{ 
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '50vh',
+          textAlign: 'center',
+          mb: 6
+        }}
+      >
         <Typography 
           variant="h2" 
           component="h1" 
-          sx={{ 
-            fontWeight: 900, 
-            mb: 2, 
-          }}
+          sx={{ fontWeight: 900, mb: 2 }}
         >
           guitar tabs.
         </Typography>
+
         <Typography 
           variant="h6" 
           color="text.secondary" 
-          sx={{ mb: 5, mx: 'auto', fontWeight: 400 }}
+          sx={{ mb: 5, maxWidth: '600px', fontWeight: 400 }}
         >
           community-driven database for your favorite guitar tablatures
         </Typography>
         
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mx: 'auto', width: 'fit-content' }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
           <Button 
             variant="contained" 
             size="large" 
@@ -60,7 +68,7 @@ export function Home() {
           <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold' }}>
             painless contributions
           </Typography>
-          <Typography>
+          <Typography sx={{ mb: 2 }}>
             instead of forcing you to click through multiple pages to add an artist, then an album, then a track, our smart form handles it all in one go.
           </Typography>
           <Typography>

@@ -20,10 +20,9 @@ export async function getTabs({
   include = false,
   page = 1,
   limit = 25,
-}: { trackId?: number; include?: boolean, page?: number, limit?: number } = {}): Promise<Tab[]> {
+}: { trackId?: number; include?: boolean, page?: number, limit?: number } = {}): Promise<{ data: Tab[]; meta: any }> {
   const res = await fetch(apiUrl("tabs", { trackId, include, page, limit }));
-  const json = await res.json();
-  return json.data;
+  return await res.json();
 }
 
 export async function getTab({

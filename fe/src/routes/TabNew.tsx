@@ -8,8 +8,8 @@ import { getTracks } from "../api/tracks";
 import type { Release, Track } from "../types";
 
 export async function loader() {
-  const artists = await getArtists();
-  return { artists };
+  const response = await getArtists({ limit: 50 });
+  return { artists: response.data };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
