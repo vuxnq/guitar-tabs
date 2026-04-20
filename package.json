@@ -5,7 +5,7 @@
   "description": "the core idea is a community database for guitar tabs",
   "main": "index.js",
   "scripts": {
-    "setup": "cd be && npm run setup && cd ../fe && npm install",
+    "setup": "npm install && cd be && npm run setup && cd ../fe && npm install",
     "dev": "concurrently \"cd be && npm run dev\" \"cd fe && npm run dev\""
   },
   "keywords": [],
