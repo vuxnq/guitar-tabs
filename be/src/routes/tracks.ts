@@ -1,11 +1,13 @@
 import { Router } from "express";
 import prisma from "../db";
+import { getPagination, paginateResponse } from "../utils/pagination";
 
 const router = Router();
 
 // GET /api/tracks
 router.get("/", async (req, res) => {
   const { releaseId } = req.query;
+  const { page, limit, skip, take } = getPagination(req.query);
 
   let whereClause = {};
   if (releaseId) {
@@ -17,11 +19,16 @@ router.get("/", async (req, res) => {
   }
 
   try {
-    const tracks = await prisma.track.findMany({
-      where: whereClause,
-      orderBy: { title: "asc" },
-    });
-    res.json(tracks);
+    const [tracks, totalCount] = await Promise.all([
+      prisma.track.findMany({
+        where: whereClause,
+        orderBy: { title: "asc" },
+        skip,
+        take,
+      }),
+      prisma.track.count({ where: whereClause })
+    ]);
+    res.json(paginateResponse(tracks, totalCount, page, limit));
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "failed to fetch tracks" });

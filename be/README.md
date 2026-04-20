@@ -23,7 +23,6 @@ npm run db:reset
 ```
 
 ## api endpoints
-*note: `GET` endpoints might include pagination in the future.*
 
 ### artists
 - `GET /api/artists` - get all artists
@@ -52,4 +51,12 @@ npm run db:reset
 - `DELETE /api/tabs/:id?cleanup=true` - delete tab. if `cleanup=true`, cascade deletes empty parents
 
 ### search
-- `GET /api/search?q={query}` - global search across all entities
+- `GET /api/search?q={query}&limit={limit}` - global search across all entities
+
+#### pagination
+all `GET` endpoints that return a list (artists, releases, tracks, tabs) support pagination via query parameters
+
+**query parameters:**
+
+- `page` (default: 1)
+- `limit` (default: 25 , max: 50)

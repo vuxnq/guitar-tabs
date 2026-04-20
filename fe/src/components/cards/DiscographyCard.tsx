@@ -26,7 +26,7 @@ export function DiscographyCard({ id, title, tracks, isHighlighted }: Discograph
 
       <Divider />
 
-      <List disablePadding>
+      <List disablePadding sx={{ maxHeight: 500, overflowY: 'auto' }}>
         {tracks.map((track) => (
           <ListItem key={track.id} disablePadding>
             <ListItemButton component={Link} to={`/tracks/${track.id}`}>

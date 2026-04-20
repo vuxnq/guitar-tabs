@@ -3,9 +3,12 @@ import { apiUrl } from "./api";
 
 export async function getReleases({
   artistId,
-}: { artistId?: number } = {}): Promise<Release[]> {
-  const res = await fetch(apiUrl("releases", { artistId }));
-  return res.json();
+  page = 1,
+  limit = 25,
+}: { artistId?: number, page?: number, limit?: number } = {}): Promise<Release[]> {
+  const res = await fetch(apiUrl("releases", { artistId, page, limit }));
+  const json = await res.json();
+  return json.data;
 }
 
 export async function getRelease({

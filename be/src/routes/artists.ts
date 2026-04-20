@@ -1,15 +1,23 @@
 import { Router } from "express";
 import prisma from "../db";
+import { getPagination, paginateResponse } from "../utils/pagination";
 
 const router = Router();
 
 // GET /api/artists
 router.get("/", async (req, res) => {
+  const { page, limit, skip, take } = getPagination(req.query);
+
   try {
-    const artists = await prisma.artist.findMany({
-      orderBy: { name: "asc" },
-    });
-    res.json(artists);
+    const [artists, totalCount] = await Promise.all([
+      prisma.artist.findMany({
+        orderBy: { name: "asc" },
+        skip,
+        take,
+      }),
+      prisma.artist.count()
+    ]);
+    res.json(paginateResponse(artists, totalCount, page, limit));
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "failed to fetch artists" });

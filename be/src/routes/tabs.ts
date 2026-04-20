@@ -1,11 +1,13 @@
 import { Router } from "express";
 import prisma from "../db";
+import { getPagination, paginateResponse } from "../utils/pagination";
 
 const router = Router();
 
 // GET /api/tabs
 router.get("/", async (req, res) => {
   const { trackId, include } = req.query;
+  const { page, limit, skip, take } = getPagination(req.query);
 
   let whereClause = {};
   if (trackId) {
@@ -17,15 +19,17 @@ router.get("/", async (req, res) => {
   }
 
   try {
-    const tabs = await prisma.tab.findMany({
-      where: whereClause,
-      orderBy: { createdAt: "desc" },
-      include:
-        include === "true"
-          ? { track: { include: { release: { include: { artist: true } } } } }
-          : {},
-    });
-    res.json(tabs);
+    const [tabs, totalCount] = await Promise.all([
+      prisma.tab.findMany({
+        where: whereClause,
+        orderBy: { createdAt: "desc" },
+        include: include === "true" ? { track: { include: { release: { include: { artist: true } } } } } : {},
+        skip,
+        take,
+      }),
+      prisma.tab.count({ where: whereClause })
+    ]);
+    res.json(paginateResponse(tabs, totalCount, page, limit));
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "internal error" });

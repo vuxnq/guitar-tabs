@@ -5,18 +5,20 @@ const router = Router();
 
 // GET /api/search
 router.get("/", async (req, res) => {
-  const { q } = req.query;
+  const { q, limit } = req.query;
 
   if (!q || typeof q !== "string") {
     return res.json([]);
   }
+
+  const takeCount = limit ? Math.min(parseInt(limit as string, 10) || 5, 50) : 5;
 
   try {
     const [artists, releases, tracks, tabs] = await Promise.all([
       prisma.artist.findMany({
         where: { name: { contains: q } },
         select: { id: true, name: true },
-        take: 5,
+        take: takeCount,
       }),
       prisma.release.findMany({
         where: { title: { contains: q } },
@@ -26,7 +28,7 @@ router.get("/", async (req, res) => {
           artistId: true,
           artist: { select: { name: true } },
         },
-        take: 5,
+        take: takeCount,
       }),
       prisma.track.findMany({
         where: { title: { contains: q } },
@@ -38,7 +40,7 @@ router.get("/", async (req, res) => {
             select: { title: true, artist: { select: { name: true } } },
           },
         },
-        take: 5,
+        take: takeCount,
       }),
       prisma.tab.findMany({
         where: {
@@ -61,7 +63,7 @@ router.get("/", async (req, res) => {
             },
           },
         },
-        take: 5,
+        take: takeCount,
       }),
     ]);
 

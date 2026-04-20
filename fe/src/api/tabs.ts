@@ -18,9 +18,12 @@ export type UpdateTabRequest = {
 export async function getTabs({
   trackId,
   include = false,
-}: { trackId?: number; include?: boolean } = {}): Promise<Tab[]> {
-  const res = await fetch(apiUrl("tabs", { trackId, include }));
-  return res.json();
+  page = 1,
+  limit = 25,
+}: { trackId?: number; include?: boolean, page?: number, limit?: number } = {}): Promise<Tab[]> {
+  const res = await fetch(apiUrl("tabs", { trackId, include, page, limit }));
+  const json = await res.json();
+  return json.data;
 }
 
 export async function getTab({
