@@ -1,7 +1,8 @@
 import { Outlet } from "react-router";
+import { CssBaseline, Container, Box, ThemeProvider, createTheme } from "@mui/material";
 import { NavBar } from "./components/NavBar";
 import { Footer } from "./components/Footer";
-import { CssBaseline, Container, Box, ThemeProvider, createTheme } from "@mui/material";
+import { Breadcrumbs } from "./components/Breadcrumbs"
 
 const theme = createTheme({ palette: { mode: "dark" } });
 
@@ -13,6 +14,7 @@ export default function App() {
         <NavBar />
         <Box component="main" sx={{ flexGrow: 1 }}>
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Breadcrumbs />
             <Outlet />
           </Container>
         </Box>

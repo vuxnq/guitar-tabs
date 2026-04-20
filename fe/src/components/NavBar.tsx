@@ -10,7 +10,13 @@ export function NavBar() {
     <AppBar 
       position="sticky" 
       elevation={0} 
-      sx={{ borderBottom: 1, borderColor: 'divider', py: 2 }}
+      sx={{ 
+        bgcolor: 'rgba(18, 18, 18, 0.75)',
+        backdropFilter: 'blur(18px)', 
+        borderBottom: 1, 
+        borderColor: 'divider', 
+        py: 2 
+      }}
     >
       <Container maxWidth="lg">
         <Box 

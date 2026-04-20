@@ -45,16 +45,28 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     errorElement: <ErrorBoundary />,
+    handle: { crumb: () => ({ label: "home", path: "/" }) },
     children: [
       { index: true, element: <Home /> },
       { path: "search", element: <Search />, loader: searchLoader },
 
       // artists
-      { path: "artists", element: <Artists />, loader: artistsLoader },
+      {
+        path: "artists",
+        element: <Artists />,
+        loader: artistsLoader,
+        handle: { crumb: () => ({ label: "artists", path: "/artists" }) },
+      },
       {
         path: "artists/:artistId",
         element: <ArtistDetail />,
         loader: artistDetailLoader,
+        handle: { 
+          crumb: (data: any) => [
+            { label: "artists", path: "/artists" },
+            { label: data?.name || "artist", path: `/artists/${data?.id}` }
+          ] 
+        }
       },
 
       // tracks
@@ -62,6 +74,14 @@ const router = createBrowserRouter([
         path: "tracks/:trackId",
         element: <TrackDetail />,
         loader: trackDetailLoader,
+        handle: { 
+          crumb: (data: any) => [
+            { label: "artists", path: "/artists" },
+            { label: data?.release?.artist?.name || "artist", path: `/artists/${data?.release?.artist?.id}` },
+            { label: data?.release?.title || "release", path: `/artists/${data?.release?.artist?.id}#release-${data?.release?.id}` },
+            { label: data?.title || "track", path: `/tracks/${data?.id}` }
+          ] 
+        },
         children: [
           { index: true, element: <TabIndex /> },
           {
@@ -69,23 +89,31 @@ const router = createBrowserRouter([
             element: <TabDetail />,
             loader: tabDetailLoader,
             action: tabDetailAction,
+            handle: { crumb: (data: any) => ({ label: `tab by ${data?.author || 'author'}`, path: "#" }) },
           },
         ],
       },
 
       // tabs
-      { path: "tabs", element: <Tabs />, loader: tabsLoader },
+      {
+        path: "tabs",
+        element: <Tabs />,
+        loader: tabsLoader,
+        handle: { crumb: () => ({ label: "tabs", path: "/tabs" }) },
+      },
       {
         path: "tabs/new",
         element: <TabNew />,
         loader: tabNewLoader,
         action: tabNewAction,
+        handle: { crumb: () => ({ label: "new tab", path: "/tabs/new" }) }
       },
       {
         path: "tabs/:tabId/edit",
         element: <TabEdit />,
         loader: tabEditLoader,
         action: tabEditAction,
+        handle: { crumb: () => ({ label: "edit tab", path: "#" }) }
       },
       { path: "*", element: <NotFound /> },
     ],
