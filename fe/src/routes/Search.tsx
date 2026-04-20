@@ -1,5 +1,5 @@
-import { useLoaderData, Link, type LoaderFunctionArgs } from "react-router";
-import { Typography, Box, Card, CardContent, CardActionArea, Divider } from "@mui/material";
+import { useLoaderData, type LoaderFunctionArgs } from "react-router";
+import { Typography, Box } from "@mui/material";
 import { Masonry } from "@mui/lab";
 import { ArtistCard } from "../components/cards/ArtistCard";
 import { ReleaseCard } from "../components/cards/ReleaseCard";
@@ -96,7 +96,7 @@ export function Search() {
             {tabs.map((tab) => (
               <TabCard key={`tab-${tab.id}`}
                 id={tab.id}
-                trackId={tab.trackId}
+                trackId={tab.parentId}
                 trackTitle={tab.trackTitle}
                 artistName={tab.artistName}
                 author={tab.author}

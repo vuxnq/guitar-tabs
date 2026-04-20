@@ -15,12 +15,14 @@ export function TabCard({ id, trackId, trackTitle, artistName, author }: TabCard
       <CardActionArea component={Link} to={`/tracks/${trackId}/tabs/${id}`}>
         <CardContent>
           <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-            {trackTitle || "unknown track" }
+            {trackTitle || "unknown track"}
           </Typography>
-          <Typography variant="body2" color="primary" gutterBottom>
-            by {artistName}
-          </Typography>
-          <Typography variant="caption" color="text.disabled" sx={{ display: 'block' }}>
+          {artistName && (
+            <Typography variant="body2" color="primary" gutterBottom>
+              by {artistName}
+            </Typography>
+          )}
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
             transcribed by {author}
           </Typography>
         </CardContent>
