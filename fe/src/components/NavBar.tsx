@@ -28,7 +28,7 @@ export function NavBar() {
             to="/"
             sx={{ fontWeight: 800, textDecoration: 'none', color: 'text.primary' }}
           >
-            guitar tabs
+            guitar tabs.
           </Typography>
 
           {/* desktop searchbar */}

@@ -44,7 +44,7 @@ export function TabDetail() {
         </Button>
         <Button
           variant="outlined"
-          color="error"
+          color="secondary"
           onClick={() => setDialogOpen(true)}
         >
           delete

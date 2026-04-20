@@ -27,7 +27,7 @@ export function ConfirmDialog({
         </Button>
         <Button
           onClick={onConfirm}
-          color="error"
+          color="secondary"
           disableElevation
         >
           delete

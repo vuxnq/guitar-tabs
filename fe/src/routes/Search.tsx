@@ -66,7 +66,7 @@ export function Search() {
                     <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
                       {release.title}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="primary">
                       by {release.artistName}
                     </Typography>
                   </CardContent>
@@ -94,7 +94,7 @@ export function Search() {
                     <Typography variant="body2" color="text.secondary">
                       from {track.releaseTitle}
                     </Typography>
-                    <Typography variant="caption" color="text.disabled" sx={{ display: 'block' }}>
+                    <Typography variant="caption" color="primary" sx={{ display: 'block' }}>
                       by {track.artistName}
                     </Typography>
                   </CardContent>
@@ -119,7 +119,7 @@ export function Search() {
                     <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
                       {tab.trackTitle}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="primary">
                       by {tab.artistName}
                     </Typography>
                     <Typography variant="caption" sx={{ display: 'block' }}>

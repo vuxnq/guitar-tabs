@@ -21,10 +21,10 @@ export function Tabs() {
           <Card key={tab.id}>
             <CardActionArea component={Link} to={`/tracks/${tab.trackId}/tabs/${tab.id}`}>
               <CardContent>
-                <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', lineHeight: 1.2, mb: 0.5 }}>
+                <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
                   {tab.track?.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
+                <Typography variant="body2" color="primary" gutterBottom>
                   by {tab.track?.release?.artist?.name}
                 </Typography>
                 <Typography variant="caption" color="text.disabled" sx={{ display: 'block' }}>

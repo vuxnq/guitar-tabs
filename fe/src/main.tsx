@@ -7,36 +7,38 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import App from "./App.tsx";
-import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 // routes
-import { Home } from "./routes/Home.tsx";
-import { Search, loader as searchLoader } from "./routes/Search.tsx";
-import { Artists, loader as artistsLoader } from "./routes/Artists.tsx";
+import { Home } from "./routes/Home";
+import { Search, loader as searchLoader } from "./routes/Search";
+import { Artists, loader as artistsLoader } from "./routes/Artists";
 import {
   ArtistDetail,
   loader as artistDetailLoader,
-} from "./routes/ArtistDetail.tsx";
+} from "./routes/ArtistDetail";
 import {
   TrackDetail,
   loader as trackDetailLoader,
-} from "./routes/TrackDetail.tsx";
-import { Tabs, loader as tabsLoader } from "./routes/Tabs.tsx";
+} from "./routes/TrackDetail";
+import { Tabs, loader as tabsLoader } from "./routes/Tabs";
 import {
   TabDetail,
   loader as tabDetailLoader,
   action as tabDetailAction,
-} from "./routes/TabDetail.tsx";
+} from "./routes/TabDetail";
 import {
   TabNew,
   loader as tabNewLoader,
   action as tabNewAction,
-} from "./routes/TabNew.tsx";
+} from "./routes/TabNew";
 import {
   TabEdit,
   loader as tabEditLoader,
   action as tabEditAction,
-} from "./routes/TabEdit.tsx";
+} from "./routes/TabEdit";
+import { TabIndex } from "./routes/TabIndex";
+import { NotFound } from "./routes/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -61,7 +63,7 @@ const router = createBrowserRouter([
         element: <TrackDetail />,
         loader: trackDetailLoader,
         children: [
-          // TODO: index
+          { index: true, element: <TabIndex /> },
           {
             path: "tabs/:tabId",
             element: <TabDetail />,
@@ -85,6 +87,7 @@ const router = createBrowserRouter([
         loader: tabEditLoader,
         action: tabEditAction,
       },
+      { path: "*", element: <NotFound /> },
     ],
   },
 ]);
