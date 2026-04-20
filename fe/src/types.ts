@@ -22,9 +22,21 @@ export type Track = {
 
 export type Tab = {
   id: number;
-  content: string; // raw ASCII tab text
+  content: string;
   author: string;
   trackId: number;
   track?: Track;
   createdAt: Date;
+};
+
+export type PaginationMeta = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
+export type PaginatedResponse<T> = {
+  data: T[];
+  meta: PaginationMeta;
 };

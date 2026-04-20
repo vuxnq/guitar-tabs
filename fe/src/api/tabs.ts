@@ -1,4 +1,4 @@
-import type { Tab } from "../types";
+import type { Tab, PaginatedResponse } from "../types";
 import { apiUrl } from "./api";
 
 export type NewTabRequest = {
@@ -20,7 +20,7 @@ export async function getTabs({
   include = false,
   page = 1,
   limit = 25,
-}: { trackId?: number; include?: boolean, page?: number, limit?: number } = {}): Promise<{ data: Tab[]; meta: any }> {
+}: { trackId?: number; include?: boolean, page?: number, limit?: number } = {}): Promise<PaginatedResponse<Tab>> {
   const res = await fetch(apiUrl("tabs", { trackId, include, page, limit }));
   return await res.json();
 }
