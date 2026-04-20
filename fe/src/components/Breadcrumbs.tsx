@@ -1,5 +1,10 @@
 import { useMatches, Link as RouterLink } from "react-router";
-import { Breadcrumbs as MuiBreadcrumbs, Link, Typography, Box } from "@mui/material";
+import {
+  Breadcrumbs as MuiBreadcrumbs,
+  Link,
+  Typography,
+  Box,
+} from "@mui/material";
 
 interface Crumb {
   label: string;
@@ -30,17 +35,17 @@ export function Breadcrumbs() {
       <MuiBreadcrumbs aria-label="breadcrumb">
         {crumbs.map((crumb, index) => {
           const isLast = index === crumbs.length - 1;
-          
+
           return isLast ? (
-            <Typography key={index} sx={{ fontWeight: 'bold' }}>
+            <Typography key={index} sx={{ fontWeight: "bold" }}>
               {crumb.label}
             </Typography>
           ) : (
-            <Link 
-              key={index} 
-              component={RouterLink} 
-              to={crumb.path} 
-              underline="hover" 
+            <Link
+              key={index}
+              component={RouterLink}
+              to={crumb.path}
+              underline="hover"
               color="text.disabled"
             >
               {crumb.label}

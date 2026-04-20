@@ -11,7 +11,9 @@ router.get("/", async (req, res) => {
     return res.json([]);
   }
 
-  const takeCount = limit ? Math.min(parseInt(limit as string, 10) || 5, 50) : 5;
+  const takeCount = limit
+    ? Math.min(parseInt(limit as string, 10) || 5, 50)
+    : 5;
 
   try {
     const [artists, releases, tracks, tabs] = await Promise.all([

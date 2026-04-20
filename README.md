@@ -7,10 +7,12 @@ instead of forcing users to click through multiple pages to add an artist, then 
 this repository contains both the frontend (`fe/`) and backend (`be/`) applications.
 
 ## requirements
+
 - [node.js](https://nodejs.org/) (v18+)
 - npm
 
 ## usage
+
 ```sh
 # clone repo
 git clone https://github.com/vsb-vaj/2026s-project-tra0163-tra0164.git

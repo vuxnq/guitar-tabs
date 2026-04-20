@@ -8,12 +8,17 @@ interface TrackCardProps {
   artistName?: string;
 }
 
-export function TrackCard({ id, title, releaseTitle, artistName }: TrackCardProps) {
+export function TrackCard({
+  id,
+  title,
+  releaseTitle,
+  artistName,
+}: TrackCardProps) {
   return (
     <Card>
       <CardActionArea component={Link} to={`/tracks/${id}`}>
         <CardContent>
-          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
             {title}
           </Typography>
           {releaseTitle && (
@@ -22,7 +27,11 @@ export function TrackCard({ id, title, releaseTitle, artistName }: TrackCardProp
             </Typography>
           )}
           {artistName && (
-            <Typography variant="caption" color="primary" sx={{ display: 'block' }}>
+            <Typography
+              variant="caption"
+              color="primary"
+              sx={{ display: "block" }}
+            >
               by {artistName}
             </Typography>
           )}

@@ -8,12 +8,20 @@ interface ReleaseCardProps {
   artistName?: string;
 }
 
-export function ReleaseCard({ id, artistId, title, artistName }: ReleaseCardProps) {
+export function ReleaseCard({
+  id,
+  artistId,
+  title,
+  artistName,
+}: ReleaseCardProps) {
   return (
     <Card>
-      <CardActionArea component={Link} to={`/artists/${artistId}#release-${id}`}>
+      <CardActionArea
+        component={Link}
+        to={`/artists/${artistId}#release-${id}`}
+      >
         <CardContent>
-          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+          <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
             {title}
           </Typography>
           {artistName && (

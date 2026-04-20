@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
         skip,
         take,
       }),
-      prisma.artist.count()
+      prisma.artist.count(),
     ]);
     res.json(paginateResponse(artists, totalCount, page, limit));
   } catch (error) {

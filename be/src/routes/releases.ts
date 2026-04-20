@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
         skip,
         take,
       }),
-      prisma.release.count({ where: whereClause })
+      prisma.release.count({ where: whereClause }),
     ]);
     res.json(paginateResponse(releases, totalCount, page, limit));
   } catch (error) {

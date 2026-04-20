@@ -16,13 +16,19 @@ export function Tabs() {
 
   return (
     <Box>
-      <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
+        sx={{ fontWeight: "bold" }}
+      >
         all tabs
       </Typography>
 
       <Masonry columns={{ sm: 2, md: 3, lg: 4 }} spacing={2}>
         {response.data.map((tab) => (
-          <TabCard key={tab.id}
+          <TabCard
+            key={tab.id}
             id={tab.id}
             trackId={tab.trackId}
             trackTitle={tab.track?.title}
@@ -31,9 +37,9 @@ export function Tabs() {
           />
         ))}
       </Masonry>
-      <Pagination 
-        totalPages={response.meta.totalPages} 
-        currentPage={response.meta.page} 
+      <Pagination
+        totalPages={response.meta.totalPages}
+        currentPage={response.meta.page}
       />
     </Box>
   );

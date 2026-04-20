@@ -20,7 +20,12 @@ export async function getTabs({
   include = false,
   page = 1,
   limit = 25,
-}: { trackId?: number; include?: boolean, page?: number, limit?: number } = {}): Promise<PaginatedResponse<Tab>> {
+}: {
+  trackId?: number;
+  include?: boolean;
+  page?: number;
+  limit?: number;
+} = {}): Promise<PaginatedResponse<Tab>> {
   const res = await fetch(apiUrl("tabs", { trackId, include, page, limit }));
   return await res.json();
 }
@@ -61,6 +66,8 @@ export async function deleteTab({
   tabId: number;
   cleanup?: boolean;
 }) {
-  const res = await fetch(apiUrl(`tabs/${tabId}`, { cleanup }), { method: "DELETE" });
+  const res = await fetch(apiUrl(`tabs/${tabId}`, { cleanup }), {
+    method: "DELETE",
+  });
   return await res.json();
 }

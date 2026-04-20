@@ -1,4 +1,13 @@
-import { Card, CardContent, Typography, List, ListItem, ListItemButton, ListItemText, Divider } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Divider,
+} from "@mui/material";
 import { Link } from "react-router";
 import type { Track } from "../../types";
 
@@ -9,24 +18,29 @@ interface DiscographyCardProps {
   isHighlighted: boolean;
 }
 
-export function DiscographyCard({ id, title, tracks, isHighlighted }: DiscographyCardProps) {
+export function DiscographyCard({
+  id,
+  title,
+  tracks,
+  isHighlighted,
+}: DiscographyCardProps) {
   return (
-    <Card 
+    <Card
       id={`release-${id}`}
       sx={{
-        bgcolor: isHighlighted ? 'action.selected' : '',
-        transition: 'background-color .5s ease-in-out',
+        bgcolor: isHighlighted ? "action.selected" : "",
+        transition: "background-color .5s ease-in-out",
       }}
     >
       <CardContent>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
+        <Typography variant="h6" component="div" sx={{ fontWeight: "bold" }}>
           {title}
         </Typography>
       </CardContent>
 
       <Divider />
 
-      <List disablePadding sx={{ maxHeight: 500, overflowY: 'auto' }}>
+      <List disablePadding sx={{ maxHeight: 500, overflowY: "auto" }}>
         {tracks.map((track) => (
           <ListItem key={track.id} disablePadding>
             <ListItemButton component={Link} to={`/tracks/${track.id}`}>

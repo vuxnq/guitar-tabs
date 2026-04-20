@@ -12,7 +12,10 @@ export type SearchResult = {
   trackTitle?: string;
 };
 
-export async function globalSearch(query: string, limit: number = 25): Promise<SearchResult[]> {
+export async function globalSearch(
+  query: string,
+  limit: number = 25,
+): Promise<SearchResult[]> {
   if (!query) return [];
   const res = await fetch(apiUrl("search", { q: query, limit }));
   return res.json();

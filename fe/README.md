@@ -5,6 +5,7 @@ frontend web app for the guitar tabs app.
 built with [react](https://react.dev/), [react router v7](https://reactrouter.com/), [material ui](https://mui.com/), and [vite](https://vitejs.dev/).
 
 ## usage
+
 ```sh
 # install dependencies (if not done from root)
 npm install
@@ -17,6 +18,7 @@ npm run build
 ```
 
 ## routes
+
 - `/` - home page with quick links and project info
 - `/search` - global search results page
 - `/artists` - browse all artists

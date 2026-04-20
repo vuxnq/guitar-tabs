@@ -5,7 +5,7 @@ import { globalSearch, type SearchResult } from "../api/search";
 
 export function SearchBar() {
   const navigate = useNavigate();
-  
+
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<readonly SearchResult[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -18,7 +18,7 @@ export function SearchBar() {
       setTimeout(() => {
         setOptions([]);
         setLoading(false);
-      }, 0)
+      }, 0);
       return;
     }
 
@@ -43,14 +43,17 @@ export function SearchBar() {
     };
   }, [inputValue]);
 
-  const handleSelection = (_event: React.SyntheticEvent, newValue: string | SearchResult | null) => {
+  const handleSelection = (
+    _event: React.SyntheticEvent,
+    newValue: string | SearchResult | null,
+  ) => {
     if (!newValue) return;
 
     if (typeof newValue === "string") {
       navigate(`/search?q=${encodeURIComponent(newValue)}`);
       return;
     }
-    
+
     switch (newValue.type) {
       case "artist":
         navigate(`/artists/${newValue.id}`);
@@ -79,24 +82,32 @@ export function SearchBar() {
       loadingText="loading..."
       filterOptions={(x) => x}
       isOptionEqualToValue={(option, value) => {
-        if (typeof option === "string" || typeof value === "string") return option === value;
+        if (typeof option === "string" || typeof value === "string")
+          return option === value;
         return option.id === value.id && option.type === value.type;
       }}
       getOptionLabel={(option): string => {
-        if (typeof option === "string") return option; 
+        if (typeof option === "string") return option;
         switch (option.type) {
-          case "artist": return option.name || ""; 
-          case "track": return option.title || ""; 
-          case "tab": return `${option.trackTitle || "unknown track"} by ${option.author || "unknown author"}`; 
-          case "release": return option.title || ""; 
-          default: return "";
+          case "artist":
+            return option.name || "";
+          case "track":
+            return option.title || "";
+          case "tab":
+            return `${option.trackTitle || "unknown track"} by ${option.author || "unknown author"}`;
+          case "release":
+            return option.title || "";
+          default:
+            return "";
         }
       }}
       groupBy={(option) => option.type}
       options={options}
       loading={loading}
       freeSolo
-      renderInput={(params) => <TextField {...params} placeholder="search..." />}
+      renderInput={(params) => (
+        <TextField {...params} placeholder="search..." />
+      )}
     />
   );
 }

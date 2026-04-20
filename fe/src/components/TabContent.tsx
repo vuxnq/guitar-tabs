@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 
-// CDEFGAB + [b/#] + [m/maj/min/dim/aug/sus] + number + bass tone (/G)
-const CHORD_REGEX = /(\b[CDEFGAB](?:b|#)?(?:m|maj|min|dim|aug|sus|add)?\d*(?:\/[CDEFGAB](?:b|#)?)?(?=\s|$|[.,;)-]))/g;
+// CDEFGAB + [b/#] + [m/maj/min/dim/aug/sus/add] + number + bass tone (/G)
+const CHORD_REGEX =
+  /(\b[CDEFGAB](?:b|#)?(?:m|maj|min|dim|aug|sus|add)?\d*(?:\/[CDEFGAB](?:b|#)?)?(?=\s|$|[.,;)-]))/g;
 
 interface TabContentProps {
   content: string;
@@ -26,7 +27,9 @@ export function TabContent({ content }: TabContentProps) {
       {parts.map((part, index) => {
         if (index % 2 === 1) {
           return (
-            <Box key={index} component="span"
+            <Box
+              key={index}
+              component="span"
               sx={{
                 color: "secondary.main",
                 fontWeight: "bold",

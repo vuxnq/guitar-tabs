@@ -20,14 +20,14 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
   if (totalPages <= 1) return null;
 
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6, mb: 2 }}>
-      <MuiPagination 
-        count={totalPages} 
-        page={currentPage} 
-        onChange={handleChange} 
-        color="primary" 
+    <Box sx={{ display: "flex", justifyContent: "center", mt: 6, mb: 2 }}>
+      <MuiPagination
+        count={totalPages}
+        page={currentPage}
+        onChange={handleChange}
+        color="primary"
         shape="rounded"
-        size="large" 
+        size="large"
       />
     </Box>
   );

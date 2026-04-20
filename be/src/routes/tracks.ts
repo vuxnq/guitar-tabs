@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
         skip,
         take,
       }),
-      prisma.track.count({ where: whereClause })
+      prisma.track.count({ where: whereClause }),
     ]);
     res.json(paginateResponse(tracks, totalCount, page, limit));
   } catch (error) {

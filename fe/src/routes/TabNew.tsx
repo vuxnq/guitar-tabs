@@ -1,6 +1,20 @@
 import { useState, useEffect } from "react";
-import { Form, redirect, useLoaderData, useLocation, type ActionFunctionArgs } from "react-router";
-import { Box, Typography, Paper, Button, TextField, Autocomplete, Stack } from "@mui/material";
+import {
+  Form,
+  redirect,
+  useLoaderData,
+  useLocation,
+  type ActionFunctionArgs,
+} from "react-router";
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  TextField,
+  Autocomplete,
+  Stack,
+} from "@mui/material";
 import { createTab } from "../api/tabs";
 import { getArtists } from "../api/artists";
 import { getReleases } from "../api/releases";
@@ -31,14 +45,16 @@ export function TabNew() {
   const { artists } = useLoaderData<typeof loader>();
 
   const location = useLocation();
-  const navState = location.state as { 
-    artistName?: string; 
-    releaseTitle?: string; 
-    trackTitle?: string; 
+  const navState = location.state as {
+    artistName?: string;
+    releaseTitle?: string;
+    trackTitle?: string;
   } | null;
 
   const [artistName, setArtistName] = useState(navState?.artistName || "");
-  const [releaseTitle, setReleaseTitle] = useState(navState?.releaseTitle || "");
+  const [releaseTitle, setReleaseTitle] = useState(
+    navState?.releaseTitle || "",
+  );
   const [trackTitle, setTrackTitle] = useState(navState?.trackTitle || "");
 
   const [releases, setReleases] = useState<Release[]>([]);
@@ -50,9 +66,9 @@ export function TabNew() {
       setTimeout(() => setReleases([]), 0);
       return;
     }
-    
+
     const matchedArtist = artists.find(
-      (a) => a.name.toLowerCase() === artistName.trim().toLowerCase()
+      (a) => a.name.toLowerCase() === artistName.trim().toLowerCase(),
     );
 
     if (matchedArtist) {
@@ -70,7 +86,7 @@ export function TabNew() {
     }
 
     const matchedRelease = releases.find(
-      (r) => r.title.toLowerCase() === releaseTitle.trim().toLowerCase()
+      (r) => r.title.toLowerCase() === releaseTitle.trim().toLowerCase(),
     );
 
     if (matchedRelease) {
@@ -82,7 +98,12 @@ export function TabNew() {
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto" }}>
-      <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
+        sx={{ fontWeight: "bold" }}
+      >
         new tab
       </Typography>
 
@@ -95,7 +116,12 @@ export function TabNew() {
               inputValue={artistName}
               onInputChange={(_, newValue) => setArtistName(newValue)}
               renderInput={(params) => (
-                <TextField {...params} label="artist name" name="artistName" required />
+                <TextField
+                  {...params}
+                  label="artist name"
+                  name="artistName"
+                  required
+                />
               )}
             />
 
@@ -105,7 +131,12 @@ export function TabNew() {
               inputValue={releaseTitle}
               onInputChange={(_, newValue) => setReleaseTitle(newValue)}
               renderInput={(params) => (
-                <TextField {...params} label="release title" name="releaseTitle" required />
+                <TextField
+                  {...params}
+                  label="release title"
+                  name="releaseTitle"
+                  required
+                />
               )}
             />
 
@@ -115,7 +146,12 @@ export function TabNew() {
               inputValue={trackTitle}
               onInputChange={(_, newValue) => setTrackTitle(newValue)}
               renderInput={(params) => (
-                <TextField {...params} label="track title" name="trackTitle" required />
+                <TextField
+                  {...params}
+                  label="track title"
+                  name="trackTitle"
+                  required
+                />
               )}
             />
 
@@ -133,19 +169,15 @@ export function TabNew() {
               required
               sx={{
                 "& .MuiInputBase-input": {
-                  whiteSpace: "pre", 
+                  whiteSpace: "pre",
                   overflowX: "auto !important",
                   fontFamily: "monospace",
                   fontSize: "0.9rem",
-                }
+                },
               }}
             />
 
-            <Button 
-              type="submit" 
-              variant="contained" 
-              size="large" 
-            >
+            <Button type="submit" variant="contained" size="large">
               save tab
             </Button>
           </Stack>

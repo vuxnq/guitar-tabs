@@ -1,5 +1,18 @@
-import { useLoaderData, Form, redirect, type LoaderFunctionArgs, type ActionFunctionArgs, } from "react-router";
-import { Box, Typography, Paper, Button, TextField, Stack } from "@mui/material";
+import {
+  useLoaderData,
+  Form,
+  redirect,
+  type LoaderFunctionArgs,
+  type ActionFunctionArgs,
+} from "react-router";
+import {
+  Box,
+  Typography,
+  Paper,
+  Button,
+  TextField,
+  Stack,
+} from "@mui/material";
 import { getTab, updateTab } from "../api/tabs";
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -17,7 +30,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
   };
 
   await updateTab(payload);
-  
+
   const trackId = formData.get("trackId") as string;
   return redirect(`/tracks/${trackId}/tabs/${params.tabId}`);
 }
@@ -27,7 +40,12 @@ export function TabEdit() {
 
   return (
     <Box sx={{ maxWidth: 800, mx: "auto" }}>
-      <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
+        sx={{ fontWeight: "bold" }}
+      >
         edit tab
       </Typography>
 
@@ -73,27 +91,27 @@ export function TabEdit() {
               required
               sx={{
                 "& .MuiInputBase-input": {
-                  whiteSpace: "pre", 
+                  whiteSpace: "pre",
                   overflowX: "auto !important",
                   fontFamily: "monospace",
                   fontSize: "0.9rem",
-                }
+                },
               }}
             />
 
-            <Stack direction="row" spacing={2} sx={{ justifyContent: "flex-end" }}>
-              <Button 
-                variant="outlined" 
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{ justifyContent: "flex-end" }}
+            >
+              <Button
+                variant="outlined"
                 size="large"
                 onClick={() => window.history.back()}
               >
                 cancel
               </Button>
-              <Button 
-                type="submit" 
-                variant="contained" 
-                size="large" 
-              >
+              <Button type="submit" variant="contained" size="large">
                 update tab
               </Button>
             </Stack>

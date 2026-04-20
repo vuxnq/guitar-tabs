@@ -17,10 +17,7 @@ import {
   ArtistDetail,
   loader as artistDetailLoader,
 } from "./routes/ArtistDetail";
-import {
-  TrackDetail,
-  loader as trackDetailLoader,
-} from "./routes/TrackDetail";
+import { TrackDetail, loader as trackDetailLoader } from "./routes/TrackDetail";
 import { Tabs, loader as tabsLoader } from "./routes/Tabs";
 import {
   TabDetail,
@@ -61,12 +58,12 @@ const router = createBrowserRouter([
         path: "artists/:artistId",
         element: <ArtistDetail />,
         loader: artistDetailLoader,
-        handle: { 
+        handle: {
           crumb: (data: Awaited<ReturnType<typeof artistDetailLoader>>) => [
             { label: "artists", path: "/artists" },
-            { label: data?.name || "artist", path: `/artists/${data?.id}` }
-          ] 
-        }
+            { label: data?.name || "artist", path: `/artists/${data?.id}` },
+          ],
+        },
       },
 
       // tracks
@@ -74,13 +71,19 @@ const router = createBrowserRouter([
         path: "tracks/:trackId",
         element: <TrackDetail />,
         loader: trackDetailLoader,
-        handle: { 
+        handle: {
           crumb: (data: Awaited<ReturnType<typeof trackDetailLoader>>) => [
             { label: "artists", path: "/artists" },
-            { label: data?.release?.artist?.name || "artist", path: `/artists/${data?.release?.artist?.id}` },
-            { label: data?.release?.title || "release", path: `/artists/${data?.release?.artist?.id}#release-${data?.release?.id}` },
-            { label: data?.title || "track", path: `/tracks/${data?.id}` }
-          ] 
+            {
+              label: data?.release?.artist?.name || "artist",
+              path: `/artists/${data?.release?.artist?.id}`,
+            },
+            {
+              label: data?.release?.title || "release",
+              path: `/artists/${data?.release?.artist?.id}#release-${data?.release?.id}`,
+            },
+            { label: data?.title || "track", path: `/tracks/${data?.id}` },
+          ],
         },
         children: [
           { index: true, element: <TabIndex /> },
@@ -89,7 +92,12 @@ const router = createBrowserRouter([
             element: <TabDetail />,
             loader: tabDetailLoader,
             action: tabDetailAction,
-            handle: { crumb: (data: Awaited<ReturnType<typeof tabDetailLoader>>) => ({ label: `tab by ${data?.author || 'author'}`, path: "#" }) },
+            handle: {
+              crumb: (data: Awaited<ReturnType<typeof tabDetailLoader>>) => ({
+                label: `tab by ${data?.author || "author"}`,
+                path: "#",
+              }),
+            },
           },
         ],
       },
@@ -106,14 +114,14 @@ const router = createBrowserRouter([
         element: <TabNew />,
         loader: tabNewLoader,
         action: tabNewAction,
-        handle: { crumb: () => ({ label: "new tab", path: "/tabs/new" }) }
+        handle: { crumb: () => ({ label: "new tab", path: "/tabs/new" }) },
       },
       {
         path: "tabs/:tabId/edit",
         element: <TabEdit />,
         loader: tabEditLoader,
         action: tabEditAction,
-        handle: { crumb: () => ({ label: "edit tab", path: "#" }) }
+        handle: { crumb: () => ({ label: "edit tab", path: "#" }) },
       },
       { path: "*", element: <NotFound /> },
     ],

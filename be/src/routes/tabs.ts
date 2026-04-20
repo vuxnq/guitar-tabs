@@ -23,11 +23,14 @@ router.get("/", async (req, res) => {
       prisma.tab.findMany({
         where: whereClause,
         orderBy: { createdAt: "desc" },
-        include: include === "true" ? { track: { include: { release: { include: { artist: true } } } } } : {},
+        include:
+          include === "true"
+            ? { track: { include: { release: { include: { artist: true } } } } }
+            : {},
         skip,
         take,
       }),
-      prisma.tab.count({ where: whereClause })
+      prisma.tab.count({ where: whereClause }),
     ]);
     res.json(paginateResponse(tabs, totalCount, page, limit));
   } catch (error) {

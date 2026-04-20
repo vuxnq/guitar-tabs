@@ -24,7 +24,12 @@ export function Search() {
 
   return (
     <Box>
-      <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 'bold' }}>
+      <Typography
+        variant="h4"
+        component="h1"
+        gutterBottom
+        sx={{ fontWeight: "bold" }}
+      >
         search results {q && `for "${q}"`}
       </Typography>
 
@@ -37,10 +42,15 @@ export function Search() {
       {/* artists */}
       {artists.length > 0 && (
         <Box sx={{ mb: 4 }}>
-          <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold', color: 'text.secondary' }}>
+          <Typography
+            variant="h5"
+            component="h2"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "text.secondary" }}
+          >
             artists
           </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
             {artists.map((artist) => (
               <ArtistCard id={artist.id} name={artist.name!} />
             ))}
@@ -51,12 +61,18 @@ export function Search() {
       {/* releases */}
       {releases.length > 0 && (
         <Box sx={{ mb: 4 }}>
-          <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold', color: 'text.secondary' }}>
+          <Typography
+            variant="h5"
+            component="h2"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "text.secondary" }}
+          >
             releases
           </Typography>
           <Masonry columns={{ sm: 2, md: 3, lg: 4 }} spacing={2}>
             {releases.map((release) => (
-              <ReleaseCard key={`release-${release.id}`}
+              <ReleaseCard
+                key={`release-${release.id}`}
                 id={release.id}
                 artistId={release.parentId!}
                 title={release.title!}
@@ -70,12 +86,18 @@ export function Search() {
       {/* tracks */}
       {tracks.length > 0 && (
         <Box sx={{ mb: 4 }}>
-          <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold', color: 'text.secondary' }}>
+          <Typography
+            variant="h5"
+            component="h2"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "text.secondary" }}
+          >
             tracks
           </Typography>
           <Masonry columns={{ sm: 2, md: 3, lg: 4 }} spacing={2}>
             {tracks.map((track) => (
-              <TrackCard key={`track-${track.id}`}
+              <TrackCard
+                key={`track-${track.id}`}
                 id={track.id}
                 title={track.title!}
                 releaseTitle={track.releaseTitle!}
@@ -89,12 +111,18 @@ export function Search() {
       {/* tabs */}
       {tabs.length > 0 && (
         <Box sx={{ mb: 4 }}>
-          <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'bold', color: 'text.secondary' }}>
+          <Typography
+            variant="h5"
+            component="h2"
+            gutterBottom
+            sx={{ fontWeight: "bold", color: "text.secondary" }}
+          >
             tabs
           </Typography>
           <Masonry columns={{ sm: 2, md: 3, lg: 4 }} spacing={2}>
             {tabs.map((tab) => (
-              <TabCard key={`tab-${tab.id}`}
+              <TabCard
+                key={`tab-${tab.id}`}
                 id={tab.id}
                 trackId={tab.parentId!}
                 trackTitle={tab.trackTitle!}
@@ -105,7 +133,6 @@ export function Search() {
           </Masonry>
         </Box>
       )}
-
     </Box>
   );
 }
