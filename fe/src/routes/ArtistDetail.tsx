@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useLoaderData, Link, useLocation, type LoaderFunctionArgs } from "react-router";
-import { Typography, Box, Card, CardContent, List, ListItem, ListItemButton, ListItemText, Divider } from "@mui/material";
+import { useLoaderData, useLocation, type LoaderFunctionArgs } from "react-router";
+import { Typography, Box } from "@mui/material";
 import { Masonry } from "@mui/lab";
+import { DiscographyCard } from "../components/cards/DiscographyCard";
 import { getArtist } from "../api/artists";
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -40,37 +41,15 @@ export function ArtistDetail() {
       </Typography>
 
       <Masonry columns={{ xs: 1, sm: 2, md: 3 }} spacing={2}>
-        {artist.releases.map((release) => {
-          const cardId = `release-${release.id}`;
-          const isHighlighted = highlightedId === cardId;
-
-          return (
-            <Card key={release.id} id={cardId}
-              sx={{
-                bgcolor: isHighlighted ? 'action.selected' : '',
-                transition: 'background-color .5s ease-in-out',
-              }}
-            >
-              <CardContent sx={{ pb: 2 }}>
-                <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-                  {release.title}
-                </Typography>
-              </CardContent>
-
-              <Divider />
-
-              <List disablePadding>
-              {release.tracks.map((track) => (
-                <ListItem key={track.id} disablePadding>
-                  <ListItemButton component={Link} to={`/tracks/${track.id}`}>
-                    <ListItemText primary={`${track.title}`} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-              </List>
-            </Card>
-          );
-        })}
+        {artist.releases.map((release) => (
+          <DiscographyCard
+            key={release.id}
+            id={release.id}
+            title={release.title}
+            tracks={release.tracks || []}
+            isHighlighted={highlightedId === `release-${release.id}`}
+          />
+        ))}
       </Masonry>
     </Box>
   );

@@ -1,6 +1,10 @@
 import { useLoaderData, Link, type LoaderFunctionArgs } from "react-router";
 import { Typography, Box, Card, CardContent, CardActionArea, Divider } from "@mui/material";
 import { Masonry } from "@mui/lab";
+import { ArtistCard } from "../components/cards/ArtistCard";
+import { ReleaseCard } from "../components/cards/ReleaseCard";
+import { TrackCard } from "../components/cards/TrackCard";
+import { TabCard } from "../components/cards/TabCard";
 import { globalSearch } from "../api/search";
 
 export async function loader({ request }: LoaderFunctionArgs) {
@@ -37,16 +41,8 @@ export function Search() {
             artists
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-            {artists.map((tab) => (
-              <Card key={tab.id} sx={{ display: 'flex' }}>
-                <CardActionArea component={Link} to={`/artists/${tab.id}`}>
-                  <CardContent sx={{ pb: 2 }}>
-                    <Typography variant="h6" component="div" align="center">
-                      {tab.name}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+            {artists.map((artist) => (
+              <ArtistCard id={artist.id} name={artist.name} />
             ))}
           </Box>
         </Box>
@@ -60,18 +56,12 @@ export function Search() {
           </Typography>
           <Masonry columns={{ sm: 2, md: 3, lg: 4 }} spacing={2}>
             {releases.map((release) => (
-              <Card key={`release-${release.id}`}>
-                <CardActionArea component={Link} to={`/artists/${release.parentId}#release-${release.id}`}>
-                  <CardContent>
-                    <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-                      {release.title}
-                    </Typography>
-                    <Typography variant="body2" color="primary">
-                      by {release.artistName}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <ReleaseCard key={`release-${release.id}`}
+                id={release.id}
+                artistId={release.parentId}
+                title={release.title}
+                artistName={release.artistName}
+              />
             ))}
           </Masonry>
         </Box>
@@ -85,21 +75,12 @@ export function Search() {
           </Typography>
           <Masonry columns={{ sm: 2, md: 3, lg: 4 }} spacing={2}>
             {tracks.map((track) => (
-              <Card key={`track-${track.id}`}>
-                <CardActionArea component={Link} to={`/tracks/${track.id}`}>
-                  <CardContent>
-                    <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-                      {track.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      from {track.releaseTitle}
-                    </Typography>
-                    <Typography variant="caption" color="primary" sx={{ display: 'block' }}>
-                      by {track.artistName}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <TrackCard key={`track-${track.id}`}
+                id={track.id}
+                title={track.title}
+                releaseTitle={track.releaseTitle}
+                artistName={track.artistName}
+              />
             ))}
           </Masonry>
         </Box>
@@ -113,21 +94,13 @@ export function Search() {
           </Typography>
           <Masonry columns={{ sm: 2, md: 3, lg: 4 }} spacing={2}>
             {tabs.map((tab) => (
-              <Card key={`tab-${tab.id}`}>
-                <CardActionArea component={Link} to={`/tracks/${tab.parentId}/tabs/${tab.id}`}>
-                  <CardContent>
-                    <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-                      {tab.trackTitle}
-                    </Typography>
-                    <Typography variant="body2" color="primary">
-                      by {tab.artistName}
-                    </Typography>
-                    <Typography variant="caption" sx={{ display: 'block' }}>
-                      transcribed by {tab.author}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
+              <TabCard key={`tab-${tab.id}`}
+                id={tab.id}
+                trackId={tab.trackId}
+                trackTitle={tab.trackTitle}
+                artistName={tab.artistName}
+                author={tab.author}
+              />
             ))}
           </Masonry>
         </Box>

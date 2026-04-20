@@ -1,7 +1,8 @@
-import { useLoaderData, Link } from "react-router";
-import { Typography, Box, Card, CardContent, CardActionArea } from "@mui/material";
+import { useLoaderData } from "react-router";
+import { Typography, Box } from "@mui/material";
 import { Masonry } from "@mui/lab";
 import { getTabs } from "../api/tabs";
+import { TabCard } from "../components/cards/TabCard";
 
 export async function loader() {
   return await getTabs({ include: true });
@@ -18,21 +19,13 @@ export function Tabs() {
 
       <Masonry columns={{ sm: 2, md: 3, lg: 4 }} spacing={2}>
         {tabs.map((tab) => (
-          <Card key={tab.id}>
-            <CardActionArea component={Link} to={`/tracks/${tab.trackId}/tabs/${tab.id}`}>
-              <CardContent>
-                <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-                  {tab.track?.title}
-                </Typography>
-                <Typography variant="body2" color="primary" gutterBottom>
-                  by {tab.track?.release?.artist?.name}
-                </Typography>
-                <Typography variant="caption" color="text.disabled" sx={{ display: 'block' }}>
-                  transcribed by {tab.author}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-          </Card>
+          <TabCard key={tab.id}
+            id={tab.id}
+            trackId={tab.trackId}
+            trackTitle={tab.track?.title}
+            artistName={tab.track?.release?.artist?.name}
+            author={tab.author}
+          />
         ))}
       </Masonry>
     </Box>
