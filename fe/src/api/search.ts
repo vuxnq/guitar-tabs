@@ -14,7 +14,7 @@ export type SearchResult = {
 
 export async function globalSearch(
   query: string,
-  limit: number = 25,
+  limit: number = 24,
 ): Promise<SearchResult[]> {
   if (!query) return [];
   const res = await fetch(apiUrl("search", { q: query, limit }));

@@ -4,7 +4,7 @@ import { apiUrl } from "./api";
 export async function getTracks({
   releaseId,
   page = 1,
-  limit = 25,
+  limit = 24,
 }: { releaseId?: number; page?: number; limit?: number } = {}): Promise<
   Track[]
 > {

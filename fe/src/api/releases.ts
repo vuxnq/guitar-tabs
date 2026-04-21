@@ -4,7 +4,7 @@ import { apiUrl } from "./api";
 export async function getReleases({
   artistId,
   page = 1,
-  limit = 25,
+  limit = 24,
 }: { artistId?: number; page?: number; limit?: number } = {}): Promise<
   Release[]
 > {

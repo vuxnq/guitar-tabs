@@ -67,4 +67,4 @@ all `GET` endpoints that return a list (artists, releases, tracks, tabs) support
 **query parameters:**
 
 - `page` (default: 1)
-- `limit` (default: 25 , max: 50)
+- `limit` (default: 24 , max: 50)

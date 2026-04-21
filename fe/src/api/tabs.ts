@@ -19,7 +19,7 @@ export async function getTabs({
   trackId,
   include = false,
   page = 1,
-  limit = 25,
+  limit = 24,
 }: {
   trackId?: number;
   include?: boolean;

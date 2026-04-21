@@ -1,6 +1,6 @@
 import type { Request } from "express";
 
-export function getPagination(query: Request["query"], defaultLimit = 25) {
+export function getPagination(query: Request["query"], defaultLimit = 24) {
   const page = query.page ? parseInt(query.page as string, 10) : 1;
   const limit = query.limit
     ? parseInt(query.limit as string, 10)
