@@ -1,14 +1,28 @@
-## Project VAJ
+# guitar tabs.
 
-### Instructions
+a community-driven database for your favorite guitar tablatures.
 
-You will find instrucions on https://github.com/vsb-vaj
+instead of forcing users to click through multiple pages to add an artist, then an album, then a track, this app uses a single "smart form" that handles hierarchical creation in one go.
 
-Split your projects into 2 JS projects. You will have 2x package.json. One will be for BE in folder be, one will be for FE in folder fe. 
+this repository contains both the frontend (`fe/`) and backend (`be/`) applications.
 
-You can write instructions to your project either in this README ind in separeate README files in the folders be, fe. 
+## requirements
 
-Delete this text after you finish :) 
+- [node.js](https://nodejs.org/) (v18+)
+- npm
 
-Good luck!
+## usage
 
+```sh
+# clone repo
+git clone https://github.com/vsb-vaj/2026s-project-tra0163-tra0164.git
+cd 2026s-project-tra0163-tra0164/
+
+# install all dependencies, generate prisma client, push schema, and seed database
+npm run setup
+
+# start both frontend and backend concurrently
+npm run dev
+```
+
+for more details, check out [`be/README.md`](be/README.md) and [`fe/README.md`](fe/README.md).

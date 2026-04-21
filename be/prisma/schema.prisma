@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Artist {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  releases Release[]
+}
+
+model Release {
+  id       Int       @id @default(autoincrement())
+  title    String
+  artistId Int
+  artist   Artist    @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  tracks   Track[]
+}
+
+model Track {
+  id        Int       @id @default(autoincrement())
+  title     String
+  releaseId Int
+  release   Release   @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  tabs      Tab[]
+}
+
+model Tab {
+  id        Int      @id @default(autoincrement())
+  content   String   // raw ASCII tab text
+  author    String
+  trackId   Int
+  track     Track    @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}

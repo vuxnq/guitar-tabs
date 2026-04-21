@@ -1,0 +1,113 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { Autocomplete, TextField } from "@mui/material";
+import { globalSearch, type SearchResult } from "../api/search";
+
+export function SearchBar() {
+  const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const [options, setOptions] = useState<readonly SearchResult[]>([]);
+  const [inputValue, setInputValue] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+
+    if (inputValue.trim() === "") {
+      setTimeout(() => {
+        setOptions([]);
+        setLoading(false);
+      }, 0);
+      return;
+    }
+
+    setTimeout(() => setLoading(true), 0);
+
+    const timer = setTimeout(async () => {
+      try {
+        const results = await globalSearch(inputValue);
+        if (active) {
+          setOptions(results);
+        }
+      } catch (error) {
+        console.error("search failed", error);
+      } finally {
+        if (active) setLoading(false);
+      }
+    }, 300);
+
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [inputValue]);
+
+  const handleSelection = (
+    _event: React.SyntheticEvent,
+    newValue: string | SearchResult | null,
+  ) => {
+    if (!newValue) return;
+
+    if (typeof newValue === "string") {
+      navigate(`/search?q=${encodeURIComponent(newValue)}`);
+      return;
+    }
+
+    switch (newValue.type) {
+      case "artist":
+        navigate(`/artists/${newValue.id}`);
+        break;
+      case "track":
+        navigate(`/tracks/${newValue.id}`);
+        break;
+      case "tab":
+        navigate(`/tracks/${newValue.parentId}/tabs/${newValue.id}`);
+        break;
+      case "release":
+        navigate(`/artists/${newValue.parentId}#release-${newValue.id}`);
+        break;
+    }
+  };
+
+  return (
+    <Autocomplete
+      sx={{ width: 1 }}
+      open={open}
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
+      inputValue={inputValue}
+      onInputChange={(_event, newInputValue) => setInputValue(newInputValue)}
+      onChange={handleSelection}
+      loadingText="loading..."
+      filterOptions={(x) => x}
+      isOptionEqualToValue={(option, value) => {
+        if (typeof option === "string" || typeof value === "string")
+          return option === value;
+        return option.id === value.id && option.type === value.type;
+      }}
+      getOptionLabel={(option): string => {
+        if (typeof option === "string") return option;
+        switch (option.type) {
+          case "artist":
+            return option.name || "";
+          case "track":
+            return option.title || "";
+          case "tab":
+            return `${option.trackTitle || "unknown track"} by ${option.author || "unknown author"}`;
+          case "release":
+            return option.title || "";
+          default:
+            return "";
+        }
+      }}
+      groupBy={(option) => option.type}
+      options={options}
+      loading={loading}
+      freeSolo
+      renderInput={(params) => (
+        <TextField {...params} placeholder="search..." />
+      )}
+    />
+  );
+}

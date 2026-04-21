@@ -1,0 +1,16 @@
+{
+  "name": "",
+  "private": true,
+  "version": "1.0.0",
+  "description": "the core idea is a community database for guitar tabs",
+  "main": "index.js",
+  "scripts": {
+    "setup": "npm install && cd be && npm run setup && cd ../fe && npm install",
+    "dev": "concurrently \"cd be && npm run dev\" \"cd fe && npm run dev\""
+  },
+  "keywords": [],
+  "author": "",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

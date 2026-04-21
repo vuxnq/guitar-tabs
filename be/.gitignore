@@ -1,3 +1,5 @@
+dev.db
+
 ### VisualStudioCode ###
 ## file: VisualStudioCode.gitignore ##
 
@@ -304,3 +306,5 @@ node_modules
 psd
 thumb
 sketch
+
+/generated/prisma
